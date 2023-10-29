@@ -766,13 +766,13 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="marmara_tab">
+      <widget class="QWidget" name="squishy_tab">
        <attribute name="title">
         <string>Marmara</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_8">
         <item row="0" column="0" rowspan="3">
-         <widget class="QTabWidget" name="mcl_tab">
+         <widget class="QTabWidget" name="sqcn_tab">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -2732,7 +2732,7 @@
                     </size>
                    </property>
                    <property name="placeholderText">
-                    <string>Write an mcl address to send </string>
+                    <string>Write an sqcn address to send </string>
                    </property>
                   </widget>
                  </item>
@@ -5932,9 +5932,9 @@
                </widget>
               </item>
               <item row="1" column="1">
-               <widget class="QLabel" name="convert_mcl_label">
+               <widget class="QLabel" name="convert_sqcn_label">
                 <property name="text">
-                 <string>MCL</string>
+                 <string>SQCN</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -5942,7 +5942,7 @@
                </widget>
               </item>
               <item row="2" column="1">
-               <widget class="QLineEdit" name="mcl_amount_lineEdit">
+               <widget class="QLineEdit" name="sqcn_amount_lineEdit">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
@@ -5974,7 +5974,7 @@
                </widget>
               </item>
               <item row="0" column="1" colspan="3">
-               <widget class="QLabel" name="mcl_usd_calculator_label">
+               <widget class="QLabel" name="sqcn_usd_calculator_label">
                 <property name="text">
                  <string>Calculator</string>
                 </property>
@@ -7418,7 +7418,7 @@
   <tabstop>remote_button</tabstop>
   <tabstop>local_button</tabstop>
   <tabstop>newaddress_button</tabstop>
-  <tabstop>mcl_tab</tabstop>
+  <tabstop>sqcn_tab</tabstop>
   <tabstop>addresses_tableWidget</tabstop>
   <tabstop>lock_amount_value</tabstop>
   <tabstop>lock_button</tabstop>

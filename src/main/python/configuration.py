@@ -25,7 +25,7 @@ os.makedirs(user_data_path, exist_ok=True)  # make platform-specific user direct
 #     Win XP (roaming=True):  C:\Documents and Settings\<username>\Local Settings\Application Data\<AppAuthor>\<AppName>
 #     Win 7  (roaming=True):  C:\Users\<username>\AppData\Roaming\<AppAuthor>\<AppName>
 
-log_file_path = os.path.join(config_directory_path, "marmara-connector.log")  # configure log file directory
+log_file_path = os.path.join(config_directory_path, "squishy-connector.log")  # configure log file directory
 logging.getLogger(__name__)
 stream_handler = logging.StreamHandler()  # create stream handler and set level to info
 stream_handler.setLevel(logging.INFO)  # set stream handler level to info
@@ -35,7 +35,7 @@ logging.basicConfig(level=logging.INFO,
 
 
 class ApplicationConfig:
-    config_file = "marmara-connector.conf"
+    config_file = "squishy-connector.conf"
     config_file_path = os.path.join(config_directory_path, config_file)
 
     def __init__(self):

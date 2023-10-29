@@ -16,7 +16,7 @@ from PyQt5.QtCore import QThread, pyqtSlot, QDateTime, QSize, Qt, QTranslator, Q
 from PyQt5.QtWidgets import QMainWindow, QPushButton, QTableWidgetItem, QMessageBox, QDesktopWidget, QHeaderView, \
     QDialog, QDialogButtonBox, QVBoxLayout, QGridLayout, QToolTip, QHBoxLayout, QFileDialog
 import configuration
-import marmarachain_rpc
+import squishychain_rpc
 import api_request
 import remote_connection
 import chain_args as cp
@@ -85,8 +85,8 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         ## Edit Server Settings page
         self.edit_serversave_button.clicked.connect(self.edit_server_settings)
         self.serverdelete_button.clicked.connect(self.delete_server_setting)
-        # MCL tabwidget
-        self.mcl_tab.currentChanged.connect(self.mcl_tab_changed)
+        # SQCN tabwidget
+        self.sqcn_tab.currentChanged.connect(self.sqcn_tab_changed)
         # side panel
         self.copyaddress_button.clicked.connect(self.copyaddress_clipboard)
         self.copypubkey_button.clicked.connect(self.copypubkey_clipboard)
@@ -142,8 +142,8 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         # Wallet page
         self.myCCActivatedAddress = None
         self.addressamount_refresh_button.clicked.connect(self.get_address_amounts)
-        self.lock_button.clicked.connect(self.marmaralock_amount)
-        self.unlock_button.clicked.connect(self.marmaraunlock_amount)
+        self.lock_button.clicked.connect(self.squishylock_amount)
+        self.unlock_button.clicked.connect(self.squishyunlock_amount)
         self.refresh_loopinfo_button.setVisible(False)
         self.refresh_loopinfo_button.clicked.connect(self.get_wallet_loopinfo)
         # Coin send-receive page
@@ -160,7 +160,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         # Credit Loops page-----------------
         self.creditloop_tabWidget.currentChanged.connect(self.credit_tab_changed)
         # ---- Received Loop Requests page ----
-        self.looprequest_search_button.clicked.connect(self.search_marmarareceivelist)
+        self.looprequest_search_button.clicked.connect(self.search_squishyreceivelist)
         self.request_date_checkBox.clicked.connect(self.set_request_date_state)
         self.request_dateTimeEdit.setDateTime(QDateTime.currentDateTime())
         self.contactpk_otherpk_looprequest_comboBox.currentTextChanged.connect(self.get_selected_contact_pukey)
@@ -168,14 +168,14 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         self.contactpk_makeloop_comboBox.currentTextChanged.connect(self.get_selected_contact_loop_pubkey)
         self.contactpk_transferrequest_comboBox.currentTextChanged.connect(self.get_selected_contact_transfer_pubkey)
         self.make_credit_loop_matures_dateTimeEdit.setMinimumDateTime(QDateTime.currentDateTime())
-        self.send_loop_request_button.clicked.connect(self.marmarareceive)
-        self.send_transfer_request_button.clicked.connect(self.marmararecieve_transfer)
+        self.send_loop_request_button.clicked.connect(self.squishyreceive)
+        self.send_transfer_request_button.clicked.connect(self.squishyrecieve_transfer)
         self.looprequest_otherpk_radioButton.clicked.connect(self.change_visibilty_looprequestpubkey)
         self.looprequest_currentpk_radioButton.clicked.connect(self.change_visibilty_looprequestpubkey)
         self.change_visibilty_looprequestpubkey()
         # -----Total Credit Loops page -----
         self.activeloops_search_button.clicked.connect(self.search_active_loops)
-        self.holderloops_search_button.clicked.connect(self.marmaraholderloops)
+        self.holderloops_search_button.clicked.connect(self.squishyholderloops)
         self.activeloops_tableWidget.cellClicked.connect(self.activeloop_itemcontext)
         self.transferableloops_tableWidget.cellClicked.connect(self.transferableloops_itemcontext)
         # ---- Loop Queries page --
@@ -191,7 +191,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         self.contacts_tableWidget.horizontalHeader().sectionClicked.connect(self.clear_contacts_line_edit)
         self.contact_editing_row = ""
         # Stats Page
-        self.stats_refresh_pushButton.clicked.connect(self.get_marmara_stats)
+        self.stats_refresh_pushButton.clicked.connect(self.get_squishy_stats)
         self.stats_calculate_pushButton.setEnabled(False)
         self.stats_amount_in_activated_lineEdit.setEnabled(False)
         self.stats_amount_in_loops_lineEdit.setEnabled(False)
@@ -203,16 +203,16 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         self.earnings_search_button.clicked.connect(self.get_wallet_earnings)
         self.export_earning_table_button.clicked.connect(self.pay_for_export)
         # Market Page
-        self.exchange_market_request_button.clicked.connect(self.get_mcl_exchange_market)
-        self.mcl_amount_lineEdit.textEdited.connect(self.calculate_usd_price)
-        self.usd_amount_lineEdit.textEdited.connect(self.calculate_mcl_price)
-        self.mcl_exchange_market_result = None
-        self.mcl_exchange_ticker_result = None
+        self.exchange_market_request_button.clicked.connect(self.get_sqcn_exchange_market)
+        self.sqcn_amount_lineEdit.textEdited.connect(self.calculate_usd_price)
+        self.usd_amount_lineEdit.textEdited.connect(self.calculate_sqcn_price)
+        self.sqcn_exchange_market_result = None
+        self.sqcn_exchange_ticker_result = None
         self.market_fiat_comboBox.addItems(['USD', 'TRY', 'BTC', 'EUR', 'RUB'])
         self.market_fiat_comboBox.currentTextChanged.connect(self.market_fiat_changed)
 
         # Thread setup
-        self.thread_marmarad_path = QThread()
+        self.thread_squishyd_path = QThread()
         self.thread_autoinstall = QThread()
         self.thread_getinfo = QThread()
         self.thread_getchain = QThread()
@@ -224,20 +224,20 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         self.thread_importprivkey = QThread()
         self.thread_address_privkey = QThread()
         self.thread_seeprivkey = QThread()
-        self.thread_marmaralock = QThread()
-        self.thread_marmaraunlock = QThread()
+        self.thread_squishylock = QThread()
+        self.thread_squishyunlock = QThread()
         self.thread_sendrawtransaction = QThread()
-        self.thread_marmarareceivelist = QThread()
+        self.thread_squishyreceivelist = QThread()
         self.thread_sendtoaddress = QThread()
-        self.thread_marmaracreditloop = QThread()
-        self.thread_marmarareceive = QThread()
+        self.thread_squishycreditloop = QThread()
+        self.thread_squishyreceive = QThread()
         self.thread_setgenerate = QThread()
         self.thread_sidepanel = QThread()
-        self.thread_marmarareceive_transfer = QThread()
-        self.thread_marmarainfo = QThread()
+        self.thread_squishyreceive_transfer = QThread()
+        self.thread_squishyinfo = QThread()
         self.thread_getloops = QThread()
-        self.thread_marmaraissue = QThread()
-        self.thread_marmaratransfer = QThread()
+        self.thread_squishyissue = QThread()
+        self.thread_squishytransfer = QThread()
         self.thread_getaddresstxids = QThread()
         self.thread_sendtoteam = QThread()
         self.thread_get_address_amounts = QThread()
@@ -272,7 +272,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         self.fontsize_minus_button.setToolTip(self.tr("Decrease font size"))
         self.youtube_button.setToolTip('Youtube MARMARA')
         self.discord_button.setToolTip('Discord MARMARA')
-        self.website_button.setToolTip("marmara.io")
+        self.website_button.setToolTip("squishy.io")
         self.debug_button.setToolTip('Debug')
         self.export_earning_table_button.setToolTip(self.tr('Export to CSV'))
         self.reindex_checkBox.setToolTip(self.tr('starts from beginning and re-indexes currently '
@@ -350,7 +350,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
 
     @pyqtSlot()
     def check_app_version(self):
-        self.worker_api_app_ver = marmarachain_rpc.ApiWorker()
+        self.worker_api_app_ver = squishychain_rpc.ApiWorker()
         self.worker_api_app_ver.moveToThread(self.thread_api_app_ver)
         self.worker_api_app_ver.finished.connect(self.thread_api_app_ver.quit)
         self.thread_api_app_ver.started.connect(self.worker_api_app_ver.app_ver_check)
@@ -528,9 +528,9 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         self.total_earning_value.clear()
 
     def local_selection(self):
-        marmarachain_rpc.set_connection_local()
-        logging.info('is local connection: ' + str(marmarachain_rpc.is_local))
-        self.check_marmara_path()
+        squishychain_rpc.set_connection_local()
+        logging.info('is local connection: ' + str(squishychain_rpc.is_local))
+        self.check_squishy_path()
         self.download_blocks_button.show()
         self.host_name_label.setText(self.tr('LOCAL'))
 
@@ -538,9 +538,9 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         self.login_stackedWidget.setCurrentIndex(1)
         self.get_server_combobox_names()
         self.home_button.setVisible(True)
-        marmarachain_rpc.set_connection_remote()
-        marmarachain_rpc.set_sshclient(None)
-        logging.info('is local connection: ' + str(marmarachain_rpc.is_local))
+        squishychain_rpc.set_connection_remote()
+        squishychain_rpc.set_sshclient(None)
+        logging.info('is local connection: ' + str(squishychain_rpc.is_local))
         self.serverpw_lineEdit.clear()
         self.download_blocks_button.hide()
         if self.server_comboBox.count() != 0:
@@ -564,8 +564,8 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         if validate == 'error':
             self.login_page_info(self.tr("Authentication or Connection Error"))
         else:
-            self.check_marmara_path()
-            marmarachain_rpc.set_sshclient(validate)
+            self.check_squishy_path()
+            squishychain_rpc.set_sshclient(validate)
             self.host_name_label.setText(self.tr('Remote: ') + self.server_comboBox.currentText())
 
     @pyqtSlot()
@@ -584,16 +584,16 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         operating_system = platform.system()
         debug_log_path = ''
         if operating_system == 'Darwin':
-            debug_log_path = os.environ['HOME'] + '/Library/Application Support/Komodo/MCL'
+            debug_log_path = os.environ['HOME'] + '/Library/Application Support/Komodo/SQCN'
         elif operating_system == 'Linux':
-            debug_log_path = os.environ['HOME'] + '/.komodo/MCL'
+            debug_log_path = os.environ['HOME'] + '/.komodo/SQCN'
         elif operating_system == 'Win64' or operating_system == 'Windows':
-            debug_log_path = '%s/komodo/MCL' % os.environ['APPDATA']
+            debug_log_path = '%s/komodo/SQCN' % os.environ['APPDATA']
         debug_log_file = str(debug_log_path + '/' + 'debug.log')
         webbrowser.open_new(debug_log_file)
 
     @pyqtSlot(int)
-    def mcl_tab_changed(self, index):
+    def sqcn_tab_changed(self, index):
         if index == 4:
             self.update_contact_tablewidget()
         if index == 2:
@@ -656,37 +656,37 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
     def stop_animation(self):
         self.loading.stopAnimation()
 
-    def check_marmara_path(self):
-        self.worker_check_marmara_path = marmarachain_rpc.RpcHandler()
-        self.worker_check_marmara_path.moveToThread(self.thread_marmarad_path)
-        self.worker_check_marmara_path.finished.connect(self.thread_marmarad_path.quit)
-        self.thread_marmarad_path.started.connect(self.worker_check_marmara_path.check_marmara_path)
-        self.thread_marmarad_path.start(priority=4)
-        self.worker_check_marmara_path.output.connect(self.check_marmara_path_output)
+    def check_squishy_path(self):
+        self.worker_check_squishy_path = squishychain_rpc.RpcHandler()
+        self.worker_check_squishy_path.moveToThread(self.thread_squishyd_path)
+        self.worker_check_squishy_path.finished.connect(self.thread_squishyd_path.quit)
+        self.thread_squishyd_path.started.connect(self.worker_check_squishy_path.check_squishy_path)
+        self.thread_squishyd_path.start(priority=4)
+        self.worker_check_squishy_path.output.connect(self.check_squishy_path_output)
 
     @pyqtSlot(str)
-    def check_marmara_path_output(self, output):
-        if output == 'get marmarad path':
-            self.login_page_info(self.tr('Getting marmara chain path from config file'))
-            logging.info('Getting marmara chain path from config file')
-        if str(output).split('=')[0] == 'marmarad_path':
-            self.login_page_info(self.tr('marmara path from configuration file = ') + str(output).split('=')[1])
-            logging.info('marmara path from configuration file = ' + str(output).split('=')[1])
+    def check_squishy_path_output(self, output):
+        if output == 'get squishyd path':
+            self.login_page_info(self.tr('Getting squishy chain path from config file'))
+            logging.info('Getting squishy chain path from config file')
+        if str(output).split('=')[0] == 'squishyd_path':
+            self.login_page_info(self.tr('squishy path from configuration file = ') + str(output).split('=')[1])
+            logging.info('squishy path from configuration file = ' + str(output).split('=')[1])
         if output == 'verifiying path':
             self.login_page_info(self.tr('Verifiying the Chain location '))
             logging.info('Verifiying the Chain location ')
-        if output == 'marmarad found.':
+        if output == 'squishyd found.':
             self.login_page_info(self.tr('Chain location verified.'))
             logging.info('Chain location verified.')
             self.chain_init()
-        if output == 'need to install mcl':
+        if output == 'need to install sqcn':
             message_box = self.custom_message(self.tr('Installing Marmarachain'),
                                               self.tr('Marmarachain is not installed. Would you like to install it?'),
                                               "question", QMessageBox.Question)
             if message_box == QMessageBox.Yes:
                 logging.info('Auto-install.')
                 self.main_tab.setCurrentIndex(2)
-                if marmarachain_rpc.is_local:
+                if squishychain_rpc.is_local:
                     self.sudo_password_lineEdit.setVisible(True)
                     if platform.system() == 'Windows':
                         self.sudo_password_lineEdit.setVisible(False)
@@ -697,8 +697,8 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
 
     @pyqtSlot()
     def start_autoinstall(self):
-        self.worker_autoinstall = marmarachain_rpc.Autoinstall()
-        if marmarachain_rpc.is_local:
+        self.worker_autoinstall = squishychain_rpc.Autoinstall()
+        if squishychain_rpc.is_local:
             if platform.system() == 'Windows':
                 start_install = True
             else:
@@ -743,8 +743,8 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
                                               'information', QMessageBox.Information)
             if message_box == QMessageBox.Ok:
                 self.main_tab.setCurrentIndex(1)
-                self.mcl_tab.setCurrentIndex(0)
-                self.check_marmara_path()
+                self.sqcn_tab.setCurrentIndex(0)
+                self.check_squishy_path()
         if val > 100:
             self.install_progressBar.setValue(0)
             self.start_install_button.setEnabled(True)
@@ -777,7 +777,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
                         str(err_msg).find("error: couldn't connect to server: unknown (code -1)") != -1:
                     if self.chain_status:
                         self.custom_message(self.tr('Chain is not Working'),
-                                            self.tr('Make sure the marmara chain is running!'), 'information',
+                                            self.tr('Make sure the squishy chain is running!'), 'information',
                                             QMessageBox.Warning)
                         self.chain_status = False
                         self.chainstatus_label_value.setPixmap(self.inactive_icon_pixmap)
@@ -791,25 +791,25 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
     @pyqtSlot()
     def chain_init(self):
         self.main_tab.setCurrentIndex(1)
-        self.mcl_tab.setCurrentIndex(0)
+        self.sqcn_tab.setCurrentIndex(0)
         self.chain_stackedWidget.setCurrentIndex(0)
         self.check_chain_update()
         logging.info('chain_status ' + str(self.chain_status))
         self.bottom_info(self.tr('chain_status ' + str(self.chain_status)))
         time.sleep(0.1)
-        zcash_status = marmarachain_rpc.check_zcashparams()
+        zcash_status = squishychain_rpc.check_zcashparams()
         if zcash_status[0] == 0:
             if not self.chain_status:
-                logging.info('Checking marmarachain')
-                self.bottom_info(self.tr('Checking marmarachain'))
-                marmara_pid = marmarachain_rpc.mcl_chain_status()
-                if len(marmara_pid[0]) > 0:
-                    self.bottom_info(self.tr('marmarachain has pid'))
-                    logging.info('marmarachain has pid')
+                logging.info('Checking squishychain')
+                self.bottom_info(self.tr('Checking squishychain'))
+                squishy_pid = squishychain_rpc.sqcn_chain_status()
+                if len(squishy_pid[0]) > 0:
+                    self.bottom_info(self.tr('squishychain has pid'))
+                    logging.info('squishychain has pid')
                     self.is_chain_ready()
-                if len(marmara_pid[0]) == 0:
-                    logging.info('marmarachain is not running')
-                    self.bottom_info(self.tr('marmarachain is not running'))
+                if len(squishy_pid[0]) == 0:
+                    logging.info('squishychain is not running')
+                    self.bottom_info(self.tr('squishychain is not running'))
                     self.enable_start_button()
 
         if zcash_status[0] == 1:
@@ -837,7 +837,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
 
     def run_fetch_params(self, zc_file=None):
         self.start_animation()
-        self.worker_fetch_params = marmarachain_rpc.Autoinstall()
+        self.worker_fetch_params = squishychain_rpc.Autoinstall()
         if zc_file:
             self.worker_fetch_params.set_input_list(zc_file)
         self.worker_fetch_params.moveToThread(self.thread_fetch_params)
@@ -858,10 +858,10 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             self.chain_init()
 
     def is_chain_ready(self):
-        self.bottom_info(self.tr('Checking if marmarachain is ready for rpc'))
-        logging.info('Checking if marmarachain is ready for rpc')
+        self.bottom_info(self.tr('Checking if squishychain is ready for rpc'))
+        logging.info('Checking if squishychain is ready for rpc')
         self.start_animation()
-        self.worker_getchain = marmarachain_rpc.RpcHandler()  # worker setting
+        self.worker_getchain = squishychain_rpc.RpcHandler()  # worker setting
         self.worker_getchain.moveToThread(self.thread_getchain)  # move object in to thread
         self.worker_getchain.finished.connect(self.thread_getchain.quit)  # when finished close thread
         self.worker_getchain.finished.connect(self.stop_animation)  # when finished close animation
@@ -906,18 +906,18 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
 
     def check_chain_update(self):
         self.update_chain_button.setHidden(True)
-        self.worker_api_chain_update = marmarachain_rpc.ApiWorker()
+        self.worker_api_chain_update = squishychain_rpc.ApiWorker()
         self.worker_api_chain_update.moveToThread(self.thread_api_chain_update_check)
         self.worker_api_chain_update.finished.connect(self.thread_api_chain_update_check.quit)
-        self.thread_api_chain_update_check.started.connect(self.worker_api_chain_update.mcl_update_check)
+        self.thread_api_chain_update_check.started.connect(self.worker_api_chain_update.sqcn_update_check)
         self.thread_api_chain_update_check.start()
-        self.worker_api_chain_update.out_str.connect(self.check_installed_mcl_version)
+        self.worker_api_chain_update.out_str.connect(self.check_installed_sqcn_version)
         self.worker_api_chain_update.out_err.connect(self.check_chain_update_err)
 
     @pyqtSlot(str)
-    def check_installed_mcl_version(self, out):
+    def check_installed_sqcn_version(self, out):
         self.latest_chain_version = out
-        if marmarachain_rpc.marmara_path:
+        if squishychain_rpc.squishy_path:
             installed_chain_versiyon = self.get_installed_chain_version()
             if out == installed_chain_versiyon:
                 self.update_chain_button.setHidden(True)
@@ -927,15 +927,15 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             self.update_chain_button.setHidden(False)
 
     def get_installed_chain_version(self):
-        if marmarachain_rpc.is_local:
+        if squishychain_rpc.is_local:
             file = None
             try:
-                file = open(marmarachain_rpc.marmara_path + 'version.info', "r")
+                file = open(squishychain_rpc.squishy_path + 'version.info', "r")
                 self.chain_versiyon_tag = file.read().rstrip()
                 self.chain_version_label.setText('Marmara Chain ' + self.chain_versiyon_tag)
                 return self.chain_versiyon_tag
             except IOError as error:
-                logging.error("Exception error while reading mcl version info file: " + str(error))
+                logging.error("Exception error while reading sqcn version info file: " + str(error))
                 self.update_chain_button.setHidden(False)
             finally:
                 if file:
@@ -943,13 +943,13 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         else:
             remote_file = None
             try:
-                sftp_client = marmarachain_rpc.ssh_client.open_sftp()
-                remote_file = sftp_client.open(marmarachain_rpc.marmara_path + 'version.info', "r")
+                sftp_client = squishychain_rpc.ssh_client.open_sftp()
+                remote_file = sftp_client.open(squishychain_rpc.squishy_path + 'version.info', "r")
                 self.chain_versiyon_tag = remote_file.read().rstrip().decode()
                 self.chain_version_label.setText('Marmara Chain ' + self.chain_versiyon_tag)
                 return self.chain_versiyon_tag
             except Exception as error:
-                logging.error("Exception error while reading mcl version info file: " + str(error))
+                logging.error("Exception error while reading sqcn version info file: " + str(error))
                 self.update_chain_button.setHidden(False)
             finally:
                 if remote_file:
@@ -975,7 +975,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             logging.warning('Marmarachain is not started')
 
     def stop_chain_thread(self):
-        self.worker_stopchain = marmarachain_rpc.RpcHandler()  # worker setting
+        self.worker_stopchain = squishychain_rpc.RpcHandler()  # worker setting
         self.worker_stopchain.moveToThread(self.thread_stopchain)  # putting in to thread
         self.worker_stopchain.finished.connect(self.thread_stopchain.quit)  # when finished close thread
         self.thread_stopchain.started.connect(self.worker_stopchain.stopping_chain)  # executing worker function
@@ -1008,7 +1008,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
     # -------------------------------------------------------
     @pyqtSlot()
     def get_getinfo(self):
-        self.worker_getinfo = marmarachain_rpc.RpcHandler()  # worker setting
+        self.worker_getinfo = squishychain_rpc.RpcHandler()  # worker setting
         method = cp.getinfo  # setting command
         params = []
         self.worker_thread(self.thread_getinfo, self.worker_getinfo, method, params, self.getinfo_result)
@@ -1086,7 +1086,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         self.bottom_info(self.tr('getting getinfo'))
         logging.info('getting getinfo')
         # self.get_getinfo()
-        self.worker_sidepanel = marmarachain_rpc.RpcHandler()
+        self.worker_sidepanel = squishychain_rpc.RpcHandler()
         self.worker_thread(self.thread_sidepanel, self.worker_sidepanel, worker_output=self.refresh_side_panel_result,
                            execute='refresh_sidepanel')
         last_update = self.tr('Last Update: ')
@@ -1160,7 +1160,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
 
     @pyqtSlot()
     def open_discord(self):
-        webbrowser.open_new('https://marmara.io/discord')
+        webbrowser.open_new('https://squishy.io/discord')
 
     @pyqtSlot()
     def open_youtube(self):
@@ -1168,7 +1168,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
 
     @pyqtSlot()
     def open_website(self):
-        webbrowser.open_new('https://marmara.io')
+        webbrowser.open_new('https://squishy.io')
 
     @pyqtSlot()
     def toggle_staking(self):
@@ -1243,7 +1243,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         self.cpu_core_set_button.setVisible(False)
 
     def setgenerate(self, arg):
-        self.worker_setgenerate = marmarachain_rpc.RpcHandler()
+        self.worker_setgenerate = squishychain_rpc.RpcHandler()
         method = cp.setgenerate
         params = arg
         self.worker_thread(self.thread_setgenerate, self.worker_setgenerate, method, params, self.setgenerate_result,
@@ -1301,21 +1301,21 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         else:
             amount = int(number_of_cups) * 30
             self.support_pushButton.setEnabled(True)
-            self.support_pushButton.setText(self.tr('Support') + ' (' + str(amount) + ' MCL)')
+            self.support_pushButton.setText(self.tr('Support') + ' (' + str(amount) + ' SQCN)')
 
     @pyqtSlot()
     def send_coins_to_team(self):
         number_of_cups = self.cup_lineEdit.text()
         amount = int(number_of_cups) * 30
         team_address = 'RXWqisAoJKEGVyXj46Zo3fDZnZTwQA6kQE'
-        self.support_pushButton.setText(self.tr('Support') + ' (' + str(amount) + ' MCL)')
+        self.support_pushButton.setText(self.tr('Support') + ' (' + str(amount) + ' SQCN)')
         message_box = self.custom_message(self.tr('Confirm Transaction'),
                                           self.tr(f'The amount to be send to the Marmara Team is ') + str(amount)
-                                          + ' MCL',
+                                          + ' SQCN',
                                           "question",
                                           QMessageBox.Question)
         if message_box == QMessageBox.Yes:
-            self.worker_sendtoteam = marmarachain_rpc.RpcHandler()
+            self.worker_sendtoteam = squishychain_rpc.RpcHandler()
             method = cp.sendtoaddress
             params = [team_address, str(amount)]
             self.worker_thread(self.thread_sendtoteam, self.worker_sendtoteam, method, params,
@@ -1334,7 +1334,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         if self.chain_status:
             self.bottom_info(self.tr('getting wallet addresses'))
             logging.info('getting wallet addresses')
-            self.worker_getaddresses = marmarachain_rpc.RpcHandler()
+            self.worker_getaddresses = squishychain_rpc.RpcHandler()
             self.worker_thread(thread=self.thread_getaddresses, worker=self.worker_getaddresses,
                                worker_output=self.set_getaddresses_result, execute='get_addresses')
         else:
@@ -1449,7 +1449,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         button = self.sender()
         index = self.addresses_tableWidget.indexAt(button.pos())
         if index.isValid():
-            self.worker_setpubkey = marmarachain_rpc.RpcHandler()
+            self.worker_setpubkey = squishychain_rpc.RpcHandler()
             method = cp.setpubkey
             params = [self.addresses_tableWidget.item(index.row(), 3).text()]
             self.worker_thread(self.thread_setpubkey, self.worker_setpubkey, method, params, self.set_pubkey_result)
@@ -1494,14 +1494,14 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
                 rescan_param = ' -rescan'
             start_param = pubkey + reindex_param + rescan_param
             logging.info(start_param)
-            marmarachain_rpc.start_chain(start_param)
+            squishychain_rpc.start_chain(start_param)
             time.sleep(0.5)
             self.addresses_tableWidget.setColumnHidden(0, True)
             self.is_chain_ready()
         else:
             logging.info('sending chain start command')
             self.bottom_info(self.tr('sending chain start command'))
-            marmarachain_rpc.start_chain()
+            squishychain_rpc.start_chain()
             self.disable_start_button()
             self.is_chain_ready()
         # self.is_chain_ready()
@@ -1545,7 +1545,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
     #         rescan_param = ' -rescan'
     #     start_param = self.start_pubkey + reindex_param + rescan_param
     #     logging.info(start_param)
-    #     marmarachain_rpc.start_chain(start_param)
+    #     squishychain_rpc.start_chain(start_param)
     #     time.sleep(0.5)
     #     self.addresses_tableWidget.setColumnHidden(0, True)
     #     self.is_chain_ready()
@@ -1583,8 +1583,8 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
 
     @pyqtSlot()
     def download_bootstrap_via_webbrowser(self):
-        if marmarachain_rpc.is_local:
-            webbrowser.open_new('https://eu.bootstrap.dexstats.info/MCL-bootstrap.tar.gz')
+        if squishychain_rpc.is_local:
+            webbrowser.open_new('https://eu.bootstrap.dexstats.info/SQCN-bootstrap.tar.gz')
         else:
             pass
 
@@ -1595,11 +1595,11 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
                                                          directory=home_path, filter='*.tar.gz')
         bootstrap_path = str(get_bootstrap_path).split(',')[0].replace('(', '').replace("'", '')
         if platform.system() == 'Darwin':
-            destination_path = os.environ['HOME'] + '/Library/Application Support/Komodo/MCL'
+            destination_path = os.environ['HOME'] + '/Library/Application Support/Komodo/SQCN'
         elif platform.system() == 'Linux':
-            destination_path = os.environ['HOME'] + '/.komodo/MCL'
+            destination_path = os.environ['HOME'] + '/.komodo/SQCN'
         elif platform.system() == 'Win64' or platform.system() == 'Windows':
-            destination_path = '%s\Komodo\MCL' % os.environ['APPDATA']
+            destination_path = '%s\Komodo\SQCN' % os.environ['APPDATA']
         messagebox = self.custom_message(self.tr("Extracting blocks"),
                                          self.tr("Marmara chain will be closed if it is running"), 'question',
                                          QMessageBox.Question)
@@ -1609,7 +1609,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             stopchain_thread = None
             if self.chain_status:
                 stopchain_thread = self.stop_chain_thread()
-            self.worker_extract_bootstrap = marmarachain_rpc.RpcHandler()  # worker setting
+            self.worker_extract_bootstrap = squishychain_rpc.RpcHandler()  # worker setting
             self.worker_extract_bootstrap.set_command('tar -zvxf ' + bootstrap_path + ' -C ' + destination_path)
             self.worker_extract_bootstrap.set_method(destination_path)
             self.worker_extract_bootstrap.moveToThread(self.thread_extract_bootstrap)  # putting in to thread
@@ -1642,7 +1642,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
     @pyqtSlot()
     def check_fork(self):
         block = self.currentblock_value_label.text()
-        self.worker_getblock = marmarachain_rpc.RpcHandler()
+        self.worker_getblock = squishychain_rpc.RpcHandler()
         method = cp.getblock
         params = [block]
         self.worker_thread(self.thread_getblock, self.worker_getblock, method, params, self.out_getblock,
@@ -1709,7 +1709,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             stopchain_thread = None
             if self.chain_status:
                 stopchain_thread = self.stop_chain_thread()
-            self.worker_update_chain = marmarachain_rpc.Autoinstall()
+            self.worker_update_chain = squishychain_rpc.Autoinstall()
             self.worker_update_chain.moveToThread(self.thread_chain_update)  # putting in to thread
             self.worker_update_chain.finished.connect(self.thread_chain_update.quit)
             self.worker_update_chain.finished.connect(self.stop_animation)  # when finished close animation
@@ -1734,7 +1734,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
     @pyqtSlot()
     def update_chain_finished(self):
         if self.get_installed_chain_version():
-            self.custom_message(self.tr('Update finished'), self.tr('marmara chain ') +
+            self.custom_message(self.tr('Update finished'), self.tr('squishy chain ') +
                                 self.get_installed_chain_version() + self.tr(' update finished.'), 'information',
                                 QMessageBox.Information)
             self.update_chain_textBrowser.setVisible(False)
@@ -1774,7 +1774,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
 
     @pyqtSlot()
     def get_new_address(self):
-        self.worker_get_newaddress = marmarachain_rpc.RpcHandler()
+        self.worker_get_newaddress = squishychain_rpc.RpcHandler()
         message_box = self.custom_message(self.tr('Creating New Address'),
                                           self.tr("You are about to create a new address. Are you sure?"),
                                           "question",
@@ -1809,7 +1809,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             self.bottom_info(self.tr('write some seed words!'))
             logging.warning('write some seed words!')
         if verified:
-            self.worker_convert_passphrase = marmarachain_rpc.RpcHandler()
+            self.worker_convert_passphrase = squishychain_rpc.RpcHandler()
             method = cp.convertpassphrase
             params = [seed]
             self.worker_thread(self.thread_convertpassphrase, self.worker_convert_passphrase, method, params,
@@ -1846,7 +1846,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             logging.warning('write private key first')
 
     def get_importprivkey(self, wif):
-        self.worker_importprivkey = marmarachain_rpc.RpcHandler()
+        self.worker_importprivkey = squishychain_rpc.RpcHandler()
         method = cp.importprivkey
         params = [wif]
         self.worker_thread(self.thread_importprivkey, self.worker_importprivkey, method, params,
@@ -1873,7 +1873,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         self.get_privkey_table()
 
     def get_privkey_table(self):
-        self.worker_getaddress_privkey = marmarachain_rpc.RpcHandler()
+        self.worker_getaddress_privkey = squishychain_rpc.RpcHandler()
         method = cp.getaddressesbyaccount
         params = ['']
         self.worker_thread(self.thread_address_privkey, self.worker_getaddress_privkey, method, params,
@@ -1906,7 +1906,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         index = self.addresses_privkey_tableWidget.indexAt(button.pos())
         if index.isValid():
             address = self.addresses_privkey_tableWidget.item(index.row(), 0).text()
-            self.worker_see_privkey = marmarachain_rpc.RpcHandler()
+            self.worker_see_privkey = squishychain_rpc.RpcHandler()
             method = cp.dumpprivkey
             params = [address]
             self.worker_thread(self.thread_seeprivkey, self.worker_see_privkey, method, params,
@@ -1925,27 +1925,27 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
     # --------------------------------------------------------------------
     # Wallet page functions
     # --------------------------------------------------------------------
-    def marmarainfo(self, pubkey, worker_output):
-        self.bottom_info(self.tr('getting marmarainfo, please wait'))
-        self.worker_marmarainfo = marmarachain_rpc.RpcHandler()
-        method = cp.marmarainfo
+    def squishyinfo(self, pubkey, worker_output):
+        self.bottom_info(self.tr('getting squishyinfo, please wait'))
+        self.worker_squishyinfo = squishychain_rpc.RpcHandler()
+        method = cp.squishyinfo
         params = ['0', '0', '0', '0', pubkey]
-        self.worker_thread(self.thread_marmarainfo, self.worker_marmarainfo, method, params,
+        self.worker_thread(self.thread_squishyinfo, self.worker_squishyinfo, method, params,
                            worker_output=worker_output)
 
     @pyqtSlot()
     def get_wallet_loopinfo(self):
         pubkey = self.current_pubkey_value.text()
-        self.marmarainfo(pubkey, self.marmarinfo_amount_and_loops_result)
+        self.squishyinfo(pubkey, self.marmarinfo_amount_and_loops_result)
 
     @pyqtSlot()
     def get_address_amounts(self):
         pubkey = self.current_pubkey_value.text()
         logging.info('---- current pubkey : ' + pubkey)
         if pubkey and self.myCCActivatedAddress is None:
-            self.marmarainfo(pubkey, self.marmarinfo_amount_and_loops_result)
+            self.squishyinfo(pubkey, self.marmarinfo_amount_and_loops_result)
         if pubkey and self.myCCActivatedAddress:
-            self.worker_get_address_amounts = marmarachain_rpc.RpcHandler()
+            self.worker_get_address_amounts = squishychain_rpc.RpcHandler()
             self.worker_thread(self.thread_get_address_amounts, self.worker_get_address_amounts,
                                worker_output=self.set_address_amounts, execute='get_balances')
         if pubkey is "":
@@ -1976,23 +1976,23 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             logging.warning(str(result_out[2]))
 
     @pyqtSlot()
-    def marmaralock_amount(self):
+    def squishylock_amount(self):
         if not self.lock_amount_value.text() == "":
-            self.worker_marmaralock = marmarachain_rpc.RpcHandler()
-            method = cp.marmaralock
+            self.worker_squishylock = squishychain_rpc.RpcHandler()
+            method = cp.squishylock
             params = [self.lock_amount_value.text()]
-            self.worker_thread(self.thread_marmaralock, self.worker_marmaralock, method, params,
-                               self.marmaralock_amount_result)
+            self.worker_thread(self.thread_squishylock, self.worker_squishylock, method, params,
+                               self.squishylock_amount_result)
 
     @pyqtSlot(tuple)
-    def marmaralock_amount_result(self, result_out):
+    def squishylock_amount_result(self, result_out):
         if result_out[0]:
             result = json.loads(result_out[0])
             logging.info(result)
             if result['result'] == 'success':
                 message_box = self.custom_message(self.tr('Confirm Transaction'),
                                                   self.tr('You are about to activate ') + self.lock_amount_value.text()
-                                                  + ' MCL',
+                                                  + ' SQCN',
                                                   "question",
                                                   QMessageBox.Question)
                 if message_box == QMessageBox.Yes:
@@ -2007,23 +2007,23 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             self.bottom_err_info(result_out[1])
 
     @pyqtSlot()
-    def marmaraunlock_amount(self):
+    def squishyunlock_amount(self):
         if not self.unlock_amount_value.text() == "":
-            self.worker_marmaraunlock = marmarachain_rpc.RpcHandler()
-            method = cp.marmaraunlock
+            self.worker_squishyunlock = squishychain_rpc.RpcHandler()
+            method = cp.squishyunlock
             params = [self.unlock_amount_value.text()]
-            self.worker_thread(self.thread_marmaraunlock, self.worker_marmaraunlock, method, params,
-                               self.marmaraunlock_amount_result)
+            self.worker_thread(self.thread_squishyunlock, self.worker_squishyunlock, method, params,
+                               self.squishyunlock_amount_result)
 
     @pyqtSlot(tuple)
-    def marmaraunlock_amount_result(self, result_out):
+    def squishyunlock_amount_result(self, result_out):
         if result_out[0]:
             logging.info(result_out[0])
             logging.info(str(result_out[0]).find('result'))
             if str(result_out[0]).find('result') == -1:
                 message_box = self.custom_message(self.tr('Confirm Transaction'),
                                                   self.tr('You are about to unlock ') +
-                                                  self.unlock_amount_value.text() + ' MCL',
+                                                  self.unlock_amount_value.text() + ' SQCN',
                                                   "question",
                                                   QMessageBox.Question)
                 if message_box == QMessageBox.Yes:
@@ -2047,7 +2047,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
     def sendrawtransaction(self, hex):
         self.bottom_info(self.tr('Signing transaction'))
         logging.info('Signing transaction')
-        self.worker_sendrawtransaction = marmarachain_rpc.RpcHandler()
+        self.worker_sendrawtransaction = squishychain_rpc.RpcHandler()
         method = cp.sendrawtransaction
         params = [hex]
         time.sleep(0.1)
@@ -2099,12 +2099,12 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             else:
                 message_box = self.custom_message(self.tr('Confirm Transaction'),
                                                   self.tr('You are about to send ') +
-                                                  self.sending_amount_lineEdit.text() + self.tr(' MCL to ') +
+                                                  self.sending_amount_lineEdit.text() + self.tr(' SQCN to ') +
                                                   self.receiver_address_lineEdit.text(),
                                                   "question",
                                                   QMessageBox.Question)
                 if message_box == QMessageBox.Yes:
-                    self.worker_sendtoaddress = marmarachain_rpc.RpcHandler()
+                    self.worker_sendtoaddress = squishychain_rpc.RpcHandler()
                     method = cp.sendtoaddress
                     params = [self.receiver_address_lineEdit.text(), self.sending_amount_lineEdit.text()]
                     self.worker_thread(self.thread_sendtoaddress, self.worker_sendtoaddress, method, params,
@@ -2137,7 +2137,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
                     self.bottom_info(self.tr('A pubkey is not set yet! Please set a pubkey first.'))
                     logging.info('A pubkey is not set yet! Please set a pubkey first.')
                 else:
-                    self.worker_getaddresstxids = marmarachain_rpc.RpcHandler()
+                    self.worker_getaddresstxids = squishychain_rpc.RpcHandler()
                     method = cp.getaddresstxids
                     params = [{'addresses': [address], 'start': int(start_height), 'end': int(end_height)}]
                     self.worker_thread(self.thread_getaddresstxids, self.worker_getaddresstxids, method, params,
@@ -2188,7 +2188,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         index = self.transactions_tableWidget.indexAt(button.pos())
         if index.isValid():
             tx_id = self.transactions_tableWidget.item(index.row(), 1).text()
-            url = 'https://explorer.marmara.io/tx/' + tx_id
+            url = 'https://explorer.squishy.io/tx/' + tx_id
             webbrowser.open_new(url)
 
     @pyqtSlot(int, int)
@@ -2268,7 +2268,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             self.looprequest_otherpk_lineEdit.clear()
 
     @pyqtSlot()
-    def search_marmarareceivelist(self):
+    def search_squishyreceivelist(self):
         pubkey = self.current_pubkey_value.text()
         if self.looprequest_otherpk_radioButton.isChecked():
             pubkey = self.looprequest_otherpk_lineEdit.text()
@@ -2279,15 +2279,15 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             maxage = self.change_datetime_to_block_age(date)
             logging.info('maxage ' + str(maxage))
         self.bottom_info(self.tr('searching incoming loop requests'))
-        logging.info('querying incoming loop requests with marmarareceivelist')
-        self.worker_marmarareceivelist = marmarachain_rpc.RpcHandler()
-        method = cp.marmarareceivelist
+        logging.info('querying incoming loop requests with squishyreceivelist')
+        self.worker_squishyreceivelist = squishychain_rpc.RpcHandler()
+        method = cp.squishyreceivelist
         params = [pubkey, str(maxage)]
-        self.worker_thread(self.thread_marmarareceivelist, self.worker_marmarareceivelist, method, params,
-                           self.search_marmarareceivelist_result)
+        self.worker_thread(self.thread_squishyreceivelist, self.worker_squishyreceivelist, method, params,
+                           self.search_squishyreceivelist_result)
 
     @pyqtSlot(tuple)
-    def search_marmarareceivelist_result(self, result_out):
+    def search_squishyreceivelist_result(self, result_out):
         if result_out[2] == 200 or result_out[2] == 0:
             self.bottom_info(self.tr('finished searching incoming loop requests'))
             logging.info('finished querying incoming loop requests')
@@ -2348,7 +2348,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         if index.isValid():
             tx_id = self.loop_request_tableWidget.item(index.row(), 1).text()
             receiver_pk = self.loop_request_tableWidget.item(index.row(), 5).text()
-            self.marmaraissue(receiver_pk, tx_id)
+            self.squishyissue(receiver_pk, tx_id)
 
     def set_transfer_request_table(self, transfer_request_list):
         self.transferrequests_tableWidget.setRowCount(len(transfer_request_list))
@@ -2379,17 +2379,17 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         if index.isValid():
             tx_id = self.transferrequests_tableWidget.item(index.row(), 1).text()
             receiver_pk = self.transferrequests_tableWidget.item(index.row(), 5).text()
-            self.marmaratransfer(receiver_pk, tx_id)
+            self.squishytransfer(receiver_pk, tx_id)
 
-    def marmaraissue(self, receiver_pk, txid):
-        method = cp.marmaraissue
+    def squishyissue(self, receiver_pk, txid):
+        method = cp.squishyissue
         params = [receiver_pk, {'avalcount': '0', 'autosettlement': 'true', 'autoinsurance': 'true',
                                 'disputeexpires': 'offset', 'EscrowOn': 'false', 'BlockageAmount': '0'}, txid]
-        self.worker_marmaraissue = marmarachain_rpc.RpcHandler()
-        self.worker_thread(self.thread_marmaraissue, self.worker_marmaraissue, method, params, self.marmaraissue_result)
+        self.worker_squishyissue = squishychain_rpc.RpcHandler()
+        self.worker_thread(self.thread_squishyissue, self.worker_squishyissue, method, params, self.squishyissue_result)
 
     @pyqtSlot(tuple)
-    def marmaraissue_result(self, result_out):
+    def squishyissue_result(self, result_out):
         if result_out[0]:
             logging.info(result_out[0])
             result = json.loads(result_out[0])
@@ -2411,15 +2411,15 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         elif result_out[1]:
             self.bottom_err_info(result_out[1])
 
-    def marmaratransfer(self, receiver_pk, tx_id):
-        method = cp.marmaratransfer
+    def squishytransfer(self, receiver_pk, tx_id):
+        method = cp.squishytransfer
         params = [receiver_pk, {'avalcount': '0'}, tx_id]
-        self.worker_marmaratransfer = marmarachain_rpc.RpcHandler()
-        self.worker_thread(self.thread_marmaratransfer, self.worker_marmaratransfer, method, params,
-                           self.marmaratransfer_result)
+        self.worker_squishytransfer = squishychain_rpc.RpcHandler()
+        self.worker_thread(self.thread_squishytransfer, self.worker_squishytransfer, method, params,
+                           self.squishytransfer_result)
 
     @pyqtSlot(tuple)
-    def marmaratransfer_result(self, result_out):
+    def squishytransfer_result(self, result_out):
         if result_out[0]:
             logging.info(result_out[0])
             result = json.loads(result_out[0])
@@ -2445,25 +2445,25 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
     # --- Create Loop Request page functions ----
 
     @pyqtSlot()
-    def marmarareceive(self):
+    def squishyreceive(self):
         amount = self.make_credit_loop_amount_lineEdit.text()
         senderpk = self.make_credit_loop_senderpubkey_lineEdit.text()
         matures_date = self.make_credit_loop_matures_dateTimeEdit.dateTime()
         matures = self.change_datetime_to_block_age(matures_date)
         if amount and senderpk and matures:
-            self.worker_marmarareceive = marmarachain_rpc.RpcHandler()
-            method = cp.marmarareceive
+            self.worker_squishyreceive = squishychain_rpc.RpcHandler()
+            method = cp.squishyreceive
             currency = self.make_credit_loop_currency_value_label.text()
             params = [senderpk, amount, currency, str(matures), {'avalcount': '0'}]
             self.bottom_info(self.tr('preparing loop request'))
-            self.worker_thread(self.thread_marmarareceive, self.worker_marmarareceive, method, params,
-                               self.marmarareceive_result)
+            self.worker_thread(self.thread_squishyreceive, self.worker_squishyreceive, method, params,
+                               self.squishyreceive_result)
         else:
             self.bottom_info(self.tr('cannot make a credit loop request with empty fields'))
             logging.warning('cannot make a credit loop request with empty fields')
 
     @pyqtSlot(tuple)
-    def marmarareceive_result(self, result_out):
+    def squishyreceive_result(self, result_out):
         if result_out[0]:
             logging.info(result_out[0])
             result = json.loads(result_out[0])
@@ -2484,24 +2484,24 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         elif result_out[1]:
             self.bottom_err_info(result_out[1])
 
-    # function name: marmararecieve_transfer
-    # purpose:  holder makes a marmarareceive request to the endorser to get the credit for selling the goods/services
+    # function name: squishyrecieve_transfer
+    # purpose:  holder makes a squishyreceive request to the endorser to get the credit for selling the goods/services
     @pyqtSlot()
-    def marmararecieve_transfer(self):
+    def squishyrecieve_transfer(self):
         senderpk = self.transfer_senderpubkey_lineEdit.text()
         baton = self.transfer_baton_lineEdit.text()
         if senderpk and baton:
-            self.worker_marmarareceive_transfer = marmarachain_rpc.RpcHandler()
-            method = cp.marmarareceive
+            self.worker_squishyreceive_transfer = squishychain_rpc.RpcHandler()
+            method = cp.squishyreceive
             params = [senderpk, baton, {'avalcount': '0'}]
-            self.worker_thread(self.thread_marmarareceive_transfer, self.worker_marmarareceive_transfer,
-                               method, params, self.marmararecieve_transfer_result)
+            self.worker_thread(self.thread_squishyreceive_transfer, self.worker_squishyreceive_transfer,
+                               method, params, self.squishyrecieve_transfer_result)
         else:
             self.bottom_info(self.tr('cannot make a receive transfer request with empty fields'))
             logging.warning('cannot make a receive transfer request with empty fields')
 
     @pyqtSlot(tuple)
-    def marmararecieve_transfer_result(self, result_out):
+    def squishyrecieve_transfer_result(self, result_out):
         if result_out[0]:
             result = json.loads(result_out[0])
             if result.get('result') == "success":
@@ -2530,8 +2530,8 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         if pubkey:
             self.bottom_info(self.tr('getting active Loops details'))
             logging.info('getting active Loops details')
-            self.worker_getloops = marmarachain_rpc.RpcHandler()
-            method = cp.marmarainfo
+            self.worker_getloops = squishychain_rpc.RpcHandler()
+            method = cp.squishyinfo
             params = ['0', '0', '0', '0', pubkey]
             self.worker_thread(self.thread_getloops, self.worker_getloops, method, params, self.loops_details_result,
                                execute='active_loops_details')
@@ -2558,7 +2558,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         self.total_issuer_loop_amount_label_value.setText(str(result.get('totalamount')))
         self.closedloops_total_amount_value_label.setText(str(result.get('totalclosed')))
         self.activeloops_pending_number_value_label.setText(str(result.get('numpending')))
-        self.closedloops_total_number_value_label.setText(str(result.get('numclosed')))
+        self.closedloops_total_number_value_label.setText(str(result.get('nusqcnosed')))
         self.numberof_total_activeloops_label_value.setText(str(len(result.get('Loops'))))
         my_total_normal = float(self.wallet_total_normal_value.text())
         my_total_activated = float(self.activated_amount_value.text())
@@ -2579,8 +2579,8 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
                 # self.wallet_total_activated_value.setText(str(result.get('myTotalAmountOnActivatedAddress')))
                 self.bottom_info(self.tr('getting address amounts finished'))
                 self.set_loop_amount_result(result)
-                self.bottom_info(self.tr('finished searching marmara blockchain for all blocks for the set pubkey'))
-                logging.info('finished searching marmara blockchain for all blocks for the set pubkey')
+                self.bottom_info(self.tr('finished searching squishy blockchain for all blocks for the set pubkey'))
+                logging.info('finished searching squishy blockchain for all blocks for the set pubkey')
                 self.refresh_loopinfo_button.setVisible(True)
             if result.get('result') == "error":
                 self.bottom_info(result.get('error'))
@@ -2619,28 +2619,28 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         self.holderloops_closed_number_label_value.clear()
 
     @pyqtSlot()
-    def marmaraholderloops(self):
+    def squishyholderloops(self):
         pubkey = self.current_pubkey_value.text()
         if pubkey:
             self.bottom_info(self.tr('getting transferable Loops details'))
             logging.info('getting transferable Loops details')
-            self.worker_holderloops = marmarachain_rpc.RpcHandler()
-            method = cp.marmaraholderloops
+            self.worker_holderloops = squishychain_rpc.RpcHandler()
+            method = cp.squishyholderloops
             params = ['0', '0', '0', '0', pubkey]
             self.worker_thread(self.thread_marmarholderloop, self.worker_holderloops, method, params,
-                               worker_output=self.marmaraholderloops_result, execute='holder_loop_detail')
+                               worker_output=self.squishyholderloops_result, execute='holder_loop_detail')
         else:
             self.bottom_info('pubkey not set!')
             self.clear_search_holder_loops_labels()
 
     @pyqtSlot(tuple)
-    def marmaraholderloops_result(self, result_out):
+    def squishyholderloops_result(self, result_out):
         if result_out[2] == 0:
             self.set_holder_loops_table(result_out[0])
             self.total_transferrable_loop_amount_label_value.setText(str(result_out[1].get('totalamount')))
             self.numberof_transferrable_loop_amount_label_value.setText(str(result_out[1].get('numpending')))
             self.holderloops_closed_amount_label_value.setText(str(result_out[1].get('totalclosed')))
-            self.holderloops_closed_number_label_value.setText(str(result_out[1].get('numclosed')))
+            self.holderloops_closed_number_label_value.setText(str(result_out[1].get('nusqcnosed')))
         if result_out[2] == 1:
             self.bottom_err_info(result_out[1])
             logging.error(str(result_out[1]))
@@ -2682,7 +2682,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
     def search_any_pubkey_loops(self):
         pubkey = self.loopqueries_pubkey_lineEdit.text()
         if pubkey:
-            self.marmarainfo(pubkey, self.get_search_any_pubkey_loops_result)
+            self.squishyinfo(pubkey, self.get_search_any_pubkey_loops_result)
         else:
             self.bottom_info('write pubkey to search!')
             logging.info('write pubkey to search!')
@@ -2698,10 +2698,10 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
                 self.lq_pubkeyactivatedamount_value_label.setText(str(result.get('myActivatedAmount')))
                 self.lq_activeloopno_value_label.setText(str(result.get('numpending')))
                 self.lq_pubkeyloopamount_value_label.setText(str(result.get('TotalLockedInLoop')))
-                self.lq_closedloopno_value_label.setText(str(result.get('numclosed')))
+                self.lq_closedloopno_value_label.setText(str(result.get('nusqcnosed')))
                 self.lq_pubkeyclosedloopamount_value_label.setText(str(result.get('totalclosed')))
-                self.bottom_info(self.tr('finished searching marmarainfo'))
-                logging.info('finished searching marmarainfo')
+                self.bottom_info(self.tr('finished searching squishyinfo'))
+                logging.info('finished searching squishyinfo')
             if result.get('result') == "error":
                 self.bottom_info(result.get('error'))
                 logging.error(result.get('error'))
@@ -2717,23 +2717,23 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         self.lq_closedloopno_value_label.clear()
         self.lq_pubkeyclosedloopamount_value_label.clear()
 
-    def marmaracreditloop(self, txid):
+    def squishycreditloop(self, txid):
         self.bottom_info(self.tr('getting credit loop info, please wait'))
         logging.info('getting credit loop info, please wait')
-        self.worker_marmaracreditloop = marmarachain_rpc.RpcHandler()
-        method = cp.marmaracreditloop
+        self.worker_squishycreditloop = squishychain_rpc.RpcHandler()
+        method = cp.squishycreditloop
         params = [txid]
-        marmaracreditloop_thread = self.worker_thread(self.thread_marmaracreditloop, self.worker_marmaracreditloop,
+        squishycreditloop_thread = self.worker_thread(self.thread_squishycreditloop, self.worker_squishycreditloop,
                                                       method, params)
-        return marmaracreditloop_thread
+        return squishycreditloop_thread
 
     @pyqtSlot()
     def search_loop_txid(self):
         txid = self.loopsearch_txid_lineEdit.text()
         if txid:
-            marmaracreditloop = self.marmaracreditloop(txid)
+            squishycreditloop = self.squishycreditloop(txid)
             if self.chain_status:
-                marmaracreditloop.command_out.connect(self.search_loop_txid_result)
+                squishycreditloop.command_out.connect(self.search_loop_txid_result)
         else:
             self.bottom_info(self.tr('write loop transaction id to search!'))
             logging.info('write loop transaction id to search!')
@@ -3006,41 +3006,41 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
     # ------------------------
 
     @pyqtSlot()
-    def get_marmara_stats(self):
+    def get_squishy_stats(self):
         self.bottom_info(self.tr('getting stats values'))
-        self.worker_mcl_stats = marmarachain_rpc.ApiWorker()
-        self.worker_mcl_stats.moveToThread(self.thread_api_stats_request)
-        self.worker_mcl_stats.finished.connect(self.thread_api_stats_request.quit)
-        self.thread_api_stats_request.started.connect(self.worker_mcl_stats.mcl_stats_api)
+        self.worker_sqcn_stats = squishychain_rpc.ApiWorker()
+        self.worker_sqcn_stats.moveToThread(self.thread_api_stats_request)
+        self.worker_sqcn_stats.finished.connect(self.thread_api_stats_request.quit)
+        self.thread_api_stats_request.started.connect(self.worker_sqcn_stats.sqcn_stats_api)
         self.thread_api_stats_request.start()
-        self.worker_mcl_stats.out_dict.connect(self.set_marmara_stats_values)
-        self.worker_mcl_stats.out_err.connect(self.set_marmara_stats_err)
+        self.worker_sqcn_stats.out_dict.connect(self.set_squishy_stats_values)
+        self.worker_sqcn_stats.out_err.connect(self.set_squishy_stats_err)
         self.stats_refresh_pushButton.setEnabled(False)
         QtCore.QTimer.singleShot(60000, self.stat_refresh_enable)  # after 60 second it will enable button
 
     @pyqtSlot(dict)
-    def set_marmara_stats_values(self, mcl_stats):
-        mcl_stats_info = mcl_stats.get('info')
-        self.stats_height_value_label.setText(str(mcl_stats_info.get('height')))
-        self.stats_normal_label_value.setText(str(mcl_stats_info.get('TotalNormals')))
-        self.stats_activated_label_value.setText(str(mcl_stats_info.get('TotalActivated')))
-        self.stats_in_loops_label_value.setText(str(mcl_stats_info.get('TotalLockedInLoops')))
+    def set_squishy_stats_values(self, sqcn_stats):
+        sqcn_stats_info = sqcn_stats.get('info')
+        self.stats_height_value_label.setText(str(sqcn_stats_info.get('height')))
+        self.stats_normal_label_value.setText(str(sqcn_stats_info.get('TotalNormals')))
+        self.stats_activated_label_value.setText(str(sqcn_stats_info.get('TotalActivated')))
+        self.stats_in_loops_label_value.setText(str(sqcn_stats_info.get('TotalLockedInLoops')))
         self.bottom_info(self.tr('stats values retrieved'))
         self.stats_calculate_pushButton.setEnabled(True)
         self.stats_amount_in_activated_lineEdit.setEnabled(True)
         self.stats_amount_in_loops_lineEdit.setEnabled(True)
-        total_supply = int(mcl_stats_info.get('TotalNormals')) + int(mcl_stats_info.get('TotalActivated')) + int(
-            mcl_stats_info.get('TotalLockedInLoops'))
-        total_normal_percentage = (int(mcl_stats_info.get('TotalNormals')) * 100) / total_supply
-        total_activated_percentage = (int(mcl_stats_info.get('TotalActivated')) * 100) / total_supply
-        total_inloops_percentage = (int(mcl_stats_info.get('TotalLockedInLoops')) * 100) / total_supply
+        total_supply = int(sqcn_stats_info.get('TotalNormals')) + int(sqcn_stats_info.get('TotalActivated')) + int(
+            sqcn_stats_info.get('TotalLockedInLoops'))
+        total_normal_percentage = (int(sqcn_stats_info.get('TotalNormals')) * 100) / total_supply
+        total_activated_percentage = (int(sqcn_stats_info.get('TotalActivated')) * 100) / total_supply
+        total_inloops_percentage = (int(sqcn_stats_info.get('TotalLockedInLoops')) * 100) / total_supply
         total_normal_per = round(total_normal_percentage, 2)
         total_activated_per = round(total_activated_percentage, 2)
         total_inloops_per = round(total_inloops_percentage, 2)
         self.stat_pie_chart(total_normal_per, total_activated_per, total_inloops_per)
 
     @pyqtSlot(str)
-    def set_marmara_stats_err(self, err):
+    def set_squishy_stats_err(self, err):
         if err == 'error':
             self.bottom_err_info(self.tr('Error in getting stats values'))
 
@@ -3107,7 +3107,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
                 self.bottom_info(self.tr('Wrong Date Selection. start date should be less then stop date'))
             else:
                 if (endheigth - beginheigth) <= 57600:  # if more less 40 days
-                    self.worker_earnings = marmarachain_rpc.RpcHandler()
+                    self.worker_earnings = squishychain_rpc.RpcHandler()
                     method = cp.getblock
                     params = [beginheigth, endheigth]
                     self.worker_thread(self.thread_earnings, self.worker_earnings, method, params,
@@ -3166,11 +3166,11 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         if self.earning_stats_tableWidget.rowCount() > 0:
             team_address = 'RXWqisAoJKEGVyXj46Zo3fDZnZTwQA6kQE'
             message_box = self.custom_message(self.tr('Support the team to export'),
-                                              self.tr('You are about to send 5 MCL to Marmara Team'),
+                                              self.tr('You are about to send 5 SQCN to Marmara Team'),
                                               "question",
                                               QMessageBox.Question)
             if message_box == QMessageBox.Yes:
-                self.worker_sendtoaddress = marmarachain_rpc.RpcHandler()
+                self.worker_sendtoaddress = squishychain_rpc.RpcHandler()
                 method = cp.sendtoaddress
                 params = [team_address, 5]
                 self.worker_thread(self.thread_sendtoaddress, self.worker_sendtoaddress, method, params,
@@ -3234,45 +3234,45 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             self.exchange_market_comboBox.addItem(str(item))
 
     @pyqtSlot()
-    def get_mcl_exchange_market(self):
+    def get_sqcn_exchange_market(self):
         self.exchange_market_request_button.setEnabled(False)
         QtCore.QTimer.singleShot(20000, self.enable_market_request)  # after 20 second it will enable button
         index = self.exchange_market_comboBox.currentIndex()
         key = self.exchange_market_comboBox.itemText(index)
-        self.mcl_exchange_worker = marmarachain_rpc.ApiWorker()
-        self.mcl_exchange_worker.set_api_key(key)
-        self.mcl_exchange_worker.moveToThread(self.thread_api_exchange_request)
-        self.mcl_exchange_worker.finished.connect(self.thread_api_exchange_request.quit)
-        self.thread_api_exchange_request.started.connect(self.mcl_exchange_worker.exchange_api_run)
+        self.sqcn_exchange_worker = squishychain_rpc.ApiWorker()
+        self.sqcn_exchange_worker.set_api_key(key)
+        self.sqcn_exchange_worker.moveToThread(self.thread_api_exchange_request)
+        self.sqcn_exchange_worker.finished.connect(self.thread_api_exchange_request.quit)
+        self.thread_api_exchange_request.started.connect(self.sqcn_exchange_worker.exchange_api_run)
         self.thread_api_exchange_request.start()
-        self.mcl_exchange_worker.out_list.connect(self.set_mcl_exchange_market_result)
-        # self.mcl_exchange_worker.out_err.connect(self.err_mcl_exchange_market_result)
+        self.sqcn_exchange_worker.out_list.connect(self.set_sqcn_exchange_market_result)
+        # self.sqcn_exchange_worker.out_err.connect(self.err_sqcn_exchange_market_result)
 
     @pyqtSlot(list)
-    def set_mcl_exchange_market_result(self, out_list):
+    def set_sqcn_exchange_market_result(self, out_list):
         out_json = out_list[0]
         if type(out_json) is list:
-            self.mcl_exchange_market_result = out_json
+            self.sqcn_exchange_market_result = out_json
             self.update_exchange_table()
         if type(out_json) is str:
             if out_json == 'error':
                 self.bottom_err_info(self.tr('Error in getting exchange values'))
         if out_list[1]:
             if type(out_list[1]) is dict:
-                self.mcl_exchange_ticker_result = out_list[1]
+                self.sqcn_exchange_ticker_result = out_list[1]
                 self.update_ticker_table()
             if type(out_list[1]) is str:
                 if out_list[1] == 'error':
                     self.bottom_err_info(self.tr('Error in getting exchange values'))
 
     def update_exchange_table(self):
-        self.exchange_market_tableWidget.setRowCount(len(self.mcl_exchange_market_result))
+        self.exchange_market_tableWidget.setRowCount(len(self.sqcn_exchange_market_result))
         self.exchange_market_tableWidget.setSortingEnabled(False)
         fiat = self.market_fiat_comboBox.currentText()
-        for row in self.mcl_exchange_market_result:
+        for row in self.sqcn_exchange_market_result:
             price = ('%.8f' % row.get('quotes').get(fiat).get('price'))
             volume = ('%.8f' % row.get('quotes').get(fiat).get('volume_24h'))
-            row_number = self.mcl_exchange_market_result.index(row)
+            row_number = self.sqcn_exchange_market_result.index(row)
             self.exchange_market_tableWidget.setItem(row_number, 0, QTableWidgetItem(str(row.get('exchange_name'))))
             self.exchange_market_tableWidget.setItem(row_number, 1, QTableWidgetItem(str(row.get('pair'))))
             self.exchange_market_tableWidget.setItem(row_number, 2, QTableWidgetItem(str(price)))
@@ -3289,45 +3289,45 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
 
     def update_ticker_table(self):
         fiat = self.market_fiat_comboBox.currentText()
-        price = ('%.8f' % self.mcl_exchange_ticker_result.get(fiat).get('price'))
-        volume = ('%.8f' % self.mcl_exchange_ticker_result.get(fiat).get('volume_24h'))
+        price = ('%.8f' % self.sqcn_exchange_ticker_result.get(fiat).get('price'))
+        volume = ('%.8f' % self.sqcn_exchange_ticker_result.get(fiat).get('volume_24h'))
         self.ticker_price_label_value.setText(str(price))
         self.ticker_volume_label_value.setText(str(volume))
         self.ticker_1hour_label_value.setText(
-            str(self.mcl_exchange_ticker_result.get(fiat).get('percent_change_1h')))
+            str(self.sqcn_exchange_ticker_result.get(fiat).get('percent_change_1h')))
         self.ticker_24hour_label_value.setText(
-            str(self.mcl_exchange_ticker_result.get(fiat).get('percent_change_24h')))
+            str(self.sqcn_exchange_ticker_result.get(fiat).get('percent_change_24h')))
         self.ticker_1week_label_value.setText(
-            str(self.mcl_exchange_ticker_result.get(fiat).get('percent_change_7d')))
+            str(self.sqcn_exchange_ticker_result.get(fiat).get('percent_change_7d')))
         self.ticker_1month_label_value.setText(
-            str(self.mcl_exchange_ticker_result.get(fiat).get('percent_change_30d')))
+            str(self.sqcn_exchange_ticker_result.get(fiat).get('percent_change_30d')))
         if self.ticker_price_label_value.text():
-            self.mcl_amount_lineEdit.setEnabled(True)
+            self.sqcn_amount_lineEdit.setEnabled(True)
             self.usd_amount_lineEdit.setEnabled(True)
 
     @pyqtSlot()
     def market_fiat_changed(self):
         self.convert_usd_label.setText(self.market_fiat_comboBox.currentText())
         self.calculate_usd_price()
-        if self.mcl_exchange_market_result and self.mcl_exchange_ticker_result:
+        if self.sqcn_exchange_market_result and self.sqcn_exchange_ticker_result:
             self.update_exchange_table()
             self.update_ticker_table()
 
     @pyqtSlot()
     def calculate_usd_price(self):
-        if self.mcl_amount_lineEdit.text():
+        if self.sqcn_amount_lineEdit.text():
             current_fiat = self.market_fiat_comboBox.currentText()
-            price = float(self.mcl_exchange_ticker_result.get(current_fiat).get('price'))
-            calculation = float(self.mcl_amount_lineEdit.text()) * price
+            price = float(self.sqcn_exchange_ticker_result.get(current_fiat).get('price'))
+            calculation = float(self.sqcn_amount_lineEdit.text()) * price
             self.usd_amount_lineEdit.setText(str('%.8f' % calculation))
 
     @pyqtSlot()
-    def calculate_mcl_price(self):
+    def calculate_sqcn_price(self):
         if self.usd_amount_lineEdit.text():
             current_fiat = self.market_fiat_comboBox.currentText()
-            price = float(self.mcl_exchange_ticker_result.get(current_fiat).get('price'))
+            price = float(self.sqcn_exchange_ticker_result.get(current_fiat).get('price'))
             calculation = float(self.usd_amount_lineEdit.text()) / price
-            self.mcl_amount_lineEdit.setText(str('%.8f' % calculation))
+            self.sqcn_amount_lineEdit.setText(str('%.8f' % calculation))
 
     @pyqtSlot()
     def enable_market_request(self):

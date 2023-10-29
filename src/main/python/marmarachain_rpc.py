@@ -15,7 +15,7 @@ import configuration
 import local_connection
 import api_request
 
-marmara_path = None
+squishy_path = None
 is_local = None
 logging.getLogger(__name__)
 ssh_client = None
@@ -40,9 +40,9 @@ def set_sshclient(client):
     ssh_client = client
 
 
-def set_marmara_path(path):
-    global marmara_path
-    marmara_path = path
+def set_squishy_path(path):
+    global squishy_path
+    squishy_path = path
 
 
 def get_zcash_path():
@@ -68,17 +68,17 @@ def get_zcash_path():
         return zcash_path
 
 
-def start_param_local(marmarad):
+def start_param_local(squishyd):
     if platform.system() == 'Linux' or platform.system() == 'Darwin':
-        marmarad = cp.linux_d + marmarad
+        squishyd = cp.linux_d + squishyd
     if platform.system() == 'Windows':
-        marmarad = cp.windows_d + marmarad
-    return marmarad
+        squishyd = cp.windows_d + squishyd
+    return squishyd
 
 
 def start_param_remote():
-    marmarad = cp.linux_d + cp.marmarad
-    return marmarad
+    squishyd = cp.linux_d + cp.squishyd
+    return squishyd
 
 
 def set_remote(command):
@@ -90,30 +90,30 @@ def set_pid_local(command):
     if platform.system() == 'Linux' or platform.system() == 'Darwin':
         return command
     if platform.system() == 'Windows':
-        marmara_pid = 'tasklist | findstr komodod'
-        return marmara_pid
+        squishy_pid = 'tasklist | findstr komodod'
+        return squishy_pid
 
 
 def do_search_path(cmd):
     if is_local:
         try:
-            mcl_path = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
-            mcl_path.wait()
-            mcl_path.terminate()
-            return mcl_path.stdout.read().decode().split('\n'), mcl_path.stdout.read().decode().split('\n')
+            sqcn_path = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+            sqcn_path.wait()
+            sqcn_path.terminate()
+            return sqcn_path.stdout.read().decode().split('\n'), sqcn_path.stdout.read().decode().split('\n')
         except Exception as error:
             logging.error(error)
     else:
         if not ssh_client:
             set_sshclient(remote_connection.server_ssh_connect())
         try:
-            mcl_path = remote_connection.server_execute_command(cmd, ssh_client)
-            return mcl_path[0].split('\n'), mcl_path[1].split('\n'),
+            sqcn_path = remote_connection.server_execute_command(cmd, ssh_client)
+            return sqcn_path[0].split('\n'), sqcn_path[1].split('\n'),
         except Exception as error:
             logging.error(error)
 
 
-def search_marmarad_path():  # will be added for windows search
+def search_squishyd_path():  # will be added for windows search
     windows = False
     if is_local:  # add for windows and mac
         pwd = str(pathlib.Path.home())
@@ -134,8 +134,8 @@ def search_marmarad_path():  # will be added for windows search
             time.sleep(0.1)
         pwd = str(pwd_r[0]).replace('\n', '').replace('\r', '')
         logging.info('pwd_remote= ' + pwd)
-    search_list_linux = ['ls ' + pwd, 'ls ' + pwd + '/marmara/src', 'ls ' + pwd + '/komodo/src']
-    search_list_windows = ['PowerShell ls ' + pwd + '\marmara -name']
+    search_list_linux = ['ls ' + pwd, 'ls ' + pwd + '/squishy/src', 'ls ' + pwd + '/komodo/src']
+    search_list_windows = ['PowerShell ls ' + pwd + '\squishy -name']
     if windows:
         out_path = check_path_windows(search_list_windows)
         return out_path
@@ -240,32 +240,32 @@ def check_zcashparams():
 
 def start_chain(pubkey=None):
     if is_local:
-        marmara_param = start_param_local(cp.marmarad)
+        squishy_param = start_param_local(cp.squishyd)
         if pubkey is None:
-            marmara_param = marmara_param + ' &'
+            squishy_param = squishy_param + ' &'
         if pubkey is not None:
-            marmara_param = marmara_param + ' -pubkey=' + str(pubkey) + ' &'
+            squishy_param = squishy_param + ' -pubkey=' + str(pubkey) + ' &'
         try:
-            start = subprocess.Popen(marmara_param, cwd=marmara_path, shell=True, stdout=subprocess.DEVNULL,
+            start = subprocess.Popen(squishy_param, cwd=squishy_path, shell=True, stdout=subprocess.DEVNULL,
                                      stderr=subprocess.DEVNULL)
             while True:
-                pid = mcl_chain_status()
+                pid = sqcn_chain_status()
                 if not len(pid) == 0:
                     break
             return
         except Exception as error:
             logging.error(error)
     else:
-        marmara_param = start_param_remote()
+        squishy_param = start_param_remote()
         if not pubkey:
-            marmara_param = marmara_path + marmara_param
+            squishy_param = squishy_path + squishy_param
         if pubkey:
-            marmara_param = marmara_path + marmara_param + ' -pubkey=' + str(pubkey)
+            squishy_param = squishy_path + squishy_param + ' -pubkey=' + str(pubkey)
         try:
-            start = remote_connection.server_start_chain(marmara_param)
+            start = remote_connection.server_start_chain(squishy_param)
             time.sleep(0.3)
             while True:
-                pid = mcl_chain_status()
+                pid = sqcn_chain_status()
                 if not len(pid) == 0:
                     start.close()
                     logging.info('shell closed')
@@ -274,22 +274,22 @@ def start_chain(pubkey=None):
             logging.error(error)
 
 
-def mcl_chain_status():
+def sqcn_chain_status():
     if is_local:
-        marmara_pid = set_pid_local('pidof komodod')
+        squishy_pid = set_pid_local('pidof komodod')
         try:
-            marmarad_pid = subprocess.Popen(marmara_pid, shell=True, stdout=subprocess.PIPE)
-            marmarad_pid.wait()
-            marmarad_pid.terminate()
-            return marmarad_pid.stdout.read().decode(), marmarad_pid.stdout.read().decode()
+            squishyd_pid = subprocess.Popen(squishy_pid, shell=True, stdout=subprocess.PIPE)
+            squishyd_pid.wait()
+            squishyd_pid.terminate()
+            return squishyd_pid.stdout.read().decode(), squishyd_pid.stdout.read().decode()
         except Exception as error:
             logging.error(error)
     else:
         if not ssh_client:
             set_sshclient(remote_connection.server_ssh_connect())
         try:
-            marmarad_pid = remote_connection.server_execute_command('pidof komodod', ssh_client)
-            return marmarad_pid
+            squishyd_pid = remote_connection.server_execute_command('pidof komodod', ssh_client)
+            return squishyd_pid
         except Exception as error:
             logging.error(error)
 
@@ -308,14 +308,14 @@ def handle_rpc(method, params):
             return None, error, 1
     else:
         cmd = set_remote(method)
-        cmd = marmara_path + cmd
+        cmd = squishy_path + cmd
         for item in params:
             if method == 'convertpassphrase':
                 cmd = cmd + ' "' + item + '"'
             elif method == 'getaddressesbyaccount':
                 cmd = cmd + ' ""'
-            elif method == 'getaddresstxids' or method == 'marmaraissue' or method == 'marmaratransfer' \
-                    or method == 'marmarareceive' or method == 'getaddressbalance':
+            elif method == 'getaddresstxids' or method == 'squishyissue' or method == 'squishytransfer' \
+                    or method == 'squishyreceive' or method == 'getaddressbalance':
                 cmd = cmd + ' ' + json.dumps(item)
             elif method == 'setgenerate':
                 cmd = cmd + ' ' + str(item).lower()
@@ -369,47 +369,47 @@ class RpcHandler(QtCore.QObject):
         self.finished.emit()
 
     @pyqtSlot()
-    def check_marmara_path(self):
-        self.output.emit('get marmarad path')
+    def check_squishy_path(self):
+        self.output.emit('get squishyd path')
         path_key = ""
         if is_local:
             path_key = 'local'
         if not is_local:
             path_key = remote_connection.server_hostname
-        marmarad_path = configuration.ApplicationConfig().get_value('PATHS', path_key)
-        if marmarad_path:  # if these is path in configuration
-            self.output.emit('marmarad_path= ' + marmarad_path)
+        squishyd_path = configuration.ApplicationConfig().get_value('PATHS', path_key)
+        if squishyd_path:  # if these is path in configuration
+            self.output.emit('squishyd_path= ' + squishyd_path)
             if platform.system() == 'Windows':
-                ls_cmd = 'PowerShell ls ' + marmarad_path.replace(' ', '` ') + ' -name'
+                ls_cmd = 'PowerShell ls ' + squishyd_path.replace(' ', '` ') + ' -name'
             else:
-                ls_cmd = 'ls ' + marmarad_path
+                ls_cmd = 'ls ' + squishyd_path
             self.output.emit('verifiying path')
             verify_path = do_search_path(ls_cmd)
             if not verify_path[0] == ['']:
                 verify_path_out = str(verify_path[0]).replace('.exe', '')
                 if 'komodod' in verify_path_out and 'komodo-cli' in verify_path_out:
-                    self.output.emit('marmarad found.')
-                    set_marmara_path(marmarad_path)
+                    self.output.emit('squishyd found.')
+                    set_squishy_path(squishyd_path)
                     self.finished.emit()
                 else:
-                    self.get_marmarad_path(path_key)  # search path for marmarad
+                    self.get_squishyd_path(path_key)  # search path for squishyd
             elif verify_path[1]:
-                self.get_marmarad_path(path_key)  # search path for marmarad
+                self.get_squishyd_path(path_key)  # search path for squishyd
         else:
-            self.get_marmarad_path(path_key)
+            self.get_squishyd_path(path_key)
 
     @pyqtSlot()
-    def get_marmarad_path(self, path_key):
+    def get_squishyd_path(self, path_key):
         self.output.emit('no path config')
-        search_result = search_marmarad_path()
+        search_result = search_squishyd_path()
         if search_result:
-            self.output.emit('marmarad found.')
+            self.output.emit('squishyd found.')
             configuration.ApplicationConfig().set_key_value('PATHS', path_key, search_result)
-            if marmara_path != search_result:
-                set_marmara_path(search_result)
+            if squishy_path != search_result:
+                set_squishy_path(search_result)
             self.finished.emit()
         else:
-            self.output.emit('need to install mcl')
+            self.output.emit('need to install sqcn')
             self.finished.emit()
 
     @pyqtSlot()
@@ -425,7 +425,7 @@ class RpcHandler(QtCore.QObject):
                 time.sleep(0.1)
                 if type(addresses) == list:
                     self.walletlist_out.emit(addresses)
-                    activated_address_list = handle_rpc(cp.marmaralistactivatedaddresses, [])
+                    activated_address_list = handle_rpc(cp.squishylistactivatedaddresses, [])
                     time.sleep(0.1)
                     self.command_out.emit(activated_address_list)
                     getgenerate = handle_rpc(cp.getgenerate, [])
@@ -443,8 +443,8 @@ class RpcHandler(QtCore.QObject):
             if getinfo[2] == 1:
                 i = i + 1
                 if i >= 10:
-                    logging.error('could not start marmarachain')
-                    getinfo = None, 'could not start marmarachain'
+                    logging.error('could not start squishychain')
+                    getinfo = None, 'could not start squishychain'
                     self.command_out.emit(getinfo)
                     self.finished.emit()
                     break
@@ -457,7 +457,7 @@ class RpcHandler(QtCore.QObject):
         if result_out[0]:
             self.command_out.emit(result_out)
             while True:
-                pid = mcl_chain_status()
+                pid = sqcn_chain_status()
                 if len(pid[0]) == 0:
                     self.finished.emit()
                     out = 0, None, 0
@@ -515,7 +515,7 @@ class RpcHandler(QtCore.QObject):
         if getinfo[0]:
             self.command_out.emit(getinfo)
             time.sleep(0.1)
-            activated_address_list = handle_rpc(cp.marmaralistactivatedaddresses, [])
+            activated_address_list = handle_rpc(cp.squishylistactivatedaddresses, [])
             self.command_out.emit(activated_address_list)
             self.finished.emit()
         elif getinfo[1]:
@@ -540,7 +540,7 @@ class RpcHandler(QtCore.QObject):
         time.sleep(0.1)
         listaddressgroupings = handle_rpc(cp.listaddressgroupings, [])
         time.sleep(0.1)
-        activated_address_list = handle_rpc(cp.marmaralistactivatedaddresses, [])
+        activated_address_list = handle_rpc(cp.squishylistactivatedaddresses, [])
         time.sleep(0.1)
         if (getbalance[2] == 200 and listaddressgroupings[2] == 200 and activated_address_list[2] == 200) \
                 or (getbalance[2] == 0 and listaddressgroupings[2] == 0 and activated_address_list[2] == 0):
@@ -616,7 +616,7 @@ class RpcHandler(QtCore.QObject):
         self.finished.emit()
 
     def get_loop_detail(self, txid, holder=False):
-        loop_detail = handle_rpc(cp.marmaracreditloop, [txid])
+        loop_detail = handle_rpc(cp.squishycreditloop, [txid])
         if loop_detail[2] == 200 or loop_detail[2] == 0:
             if loop_detail[0]:
                 loop_amount = json.loads(loop_detail[0]).get('amount')
@@ -639,11 +639,11 @@ class RpcHandler(QtCore.QObject):
 
     @pyqtSlot()
     def active_loops_details(self):
-        marmarainfo = handle_rpc(self.method, self.params)
-        if marmarainfo[2] == 200 or marmarainfo[2] == 0:
-            if marmarainfo[0]:
-                marmarainfo_result = json.loads(marmarainfo[0])
-                issuances_issuer = marmarainfo_result.get('issuances')
+        squishyinfo = handle_rpc(self.method, self.params)
+        if squishyinfo[2] == 200 or squishyinfo[2] == 0:
+            if squishyinfo[0]:
+                squishyinfo_result = json.loads(squishyinfo[0])
+                issuances_issuer = squishyinfo_result.get('issuances')
                 issuer_details_list = []
                 for issuance in issuances_issuer:
                     issuance_details = self.get_loop_detail(issuance)
@@ -653,20 +653,20 @@ class RpcHandler(QtCore.QObject):
                         logging.error('some error in getting loopdetail')
                         self.finished.emit()
                         break
-                result = issuer_details_list, marmarainfo_result, 0
+                result = issuer_details_list, squishyinfo_result, 0
                 self.command_out.emit(result)
                 self.finished.emit()
         else:
-            result_err = None, marmarainfo[1], 1
+            result_err = None, squishyinfo[1], 1
             self.command_out.emit(result_err)
             self.finished.emit()
 
     @pyqtSlot()
     def holder_loop_detail(self):
-        marmaraholderloops = handle_rpc(self.method, self.params)
-        if marmaraholderloops[2] == 200 or marmaraholderloops[2] == 0:
-            if marmaraholderloops[0]:
-                holer_result = json.loads(marmaraholderloops[0])
+        squishyholderloops = handle_rpc(self.method, self.params)
+        if squishyholderloops[2] == 200 or squishyholderloops[2] == 0:
+            if squishyholderloops[0]:
+                holer_result = json.loads(squishyholderloops[0])
                 issuances_holder = holer_result.get('issuances')
                 holder_details_list = []
                 for issuance in issuances_holder:
@@ -681,7 +681,7 @@ class RpcHandler(QtCore.QObject):
                 self.command_out.emit(result)
                 self.finished.emit()
         else:
-            result_err = None, marmaraholderloops[1], 1
+            result_err = None, squishyholderloops[1], 1
             self.command_out.emit(result_err)
             self.finished.emit()
 
@@ -707,7 +707,7 @@ class RpcHandler(QtCore.QObject):
 
     @pyqtSlot()
     def calc_wallet_earnings(self):
-        method_list = [self.method, self.method, cp.listaddressgroupings, cp.marmaralistactivatedaddresses]
+        method_list = [self.method, self.method, cp.listaddressgroupings, cp.squishylistactivatedaddresses]
         param_list = [[str(self.params[0])], [str(self.params[1])], [], []]
         normaladdresseslist = []
         activatedaddresslist = []
@@ -811,18 +811,18 @@ class Autoinstall(QtCore.QObject):
 
     def __init__(self):
         super(Autoinstall, self).__init__()
-        self.mcl_download_url = api_request.latest_marmara_download_url()
-        self.mcl_linux_zipname = 'MCL-linux.zip'
-        self.mcl_win_zipname = 'MCL-win.zip'
+        self.sqcn_download_url = api_request.latest_squishy_download_url()
+        self.sqcn_linux_zipname = 'SQCN-linux.zip'
+        self.sqcn_win_zipname = 'SQCN-win.zip'
         self.linux_command_list = ['sudo apt-get update', 'sudo apt-get install libgomp1 -y',
-                                   'wget ' + str(self.mcl_download_url) + '/' + self.mcl_linux_zipname +
-                                   " -O " + self.mcl_linux_zipname, 'sudo apt-get install unzip -y',
-                                   'unzip -o MCL-linux.zip', 'sudo chmod +x komodod komodo-cli fetch-params.sh',
+                                   'wget ' + str(self.sqcn_download_url) + '/' + self.sqcn_linux_zipname +
+                                   " -O " + self.sqcn_linux_zipname, 'sudo apt-get install unzip -y',
+                                   'unzip -o SQCN-linux.zip', 'sudo chmod +x komodod komodo-cli fetch-params.sh',
                                    './fetch-params.sh']
 
-        self.win_command_list = ['mkdir marmara',
-                                 'curl -L ' + str(self.mcl_download_url) + '/' + self.mcl_win_zipname +
-                                 " > " + self.mcl_win_zipname, 'PowerShell Expand-Archive .\MCL-win.zip . -Force',
+        self.win_command_list = ['mkdir squishy',
+                                 'curl -L ' + str(self.sqcn_download_url) + '/' + self.sqcn_win_zipname +
+                                 " > " + self.sqcn_win_zipname, 'PowerShell Expand-Archive .\SQCN-win.zip . -Force',
                                  'fetch-params.bat']
         self.sudo_password = ""
         self.input_list = None
@@ -916,13 +916,13 @@ class Autoinstall(QtCore.QObject):
             self.out_text.emit(cmd)
             if i == 0:
                 cwd = str(pathlib.Path.home())
-                if os.path.isdir(cwd + '\marmara'):
-                    cwd = cwd + '\marmara'
+                if os.path.isdir(cwd + '\squishy'):
+                    cwd = cwd + '\squishy'
                     i = 1
                     cmd = self.win_command_list[i]
                     self.progress.emit(10)
             else:
-                cwd = str(pathlib.Path.home()) + '\marmara'
+                cwd = str(pathlib.Path.home()) + '\squishy'
             logging.info(cwd)
             proc = subprocess.Popen(cmd, cwd=cwd, shell=True, stdin=subprocess.PIPE,
                                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -961,14 +961,14 @@ class Autoinstall(QtCore.QObject):
     def local_chain_update(self):
         cmd_list = None
         if platform.system() == 'Linux':
-            cmd_list = ['wget ' + str(self.mcl_download_url) + '/' + self.mcl_linux_zipname + " -O " +
-                        self.mcl_linux_zipname, 'unzip -o ' + self.mcl_linux_zipname,
+            cmd_list = ['wget ' + str(self.sqcn_download_url) + '/' + self.sqcn_linux_zipname + " -O " +
+                        self.sqcn_linux_zipname, 'unzip -o ' + self.sqcn_linux_zipname,
                         'chmod +x komodod komodo-cli fetch-params.sh']
         if platform.system() == 'Windows':
             cmd_list = [self.win_command_list[1], self.win_command_list[2]]
         if cmd_list:
             for cmd in cmd_list:
-                proc = subprocess.Popen(cmd, cwd=marmara_path, shell=True, stdin=subprocess.PIPE,
+                proc = subprocess.Popen(cmd, cwd=squishy_path, shell=True, stdin=subprocess.PIPE,
                                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                 while not proc.stdout.closed:
                     out = proc.stdout.readline()
@@ -986,9 +986,9 @@ class Autoinstall(QtCore.QObject):
             self.finished.emit()
 
     def remote_chain_update(self):
-        cmd_list = ['curl -L ' + str(self.mcl_download_url) + '/' + self.mcl_linux_zipname + ' > ' + marmara_path +
-                    self.mcl_linux_zipname, 'unzip -o ' + marmara_path + self.mcl_linux_zipname + ' -d ' + marmara_path,
-                    'chmod +x ' + marmara_path + 'komodod ' + marmara_path + 'komodo-cli ' + marmara_path +
+        cmd_list = ['curl -L ' + str(self.sqcn_download_url) + '/' + self.sqcn_linux_zipname + ' > ' + squishy_path +
+                    self.sqcn_linux_zipname, 'unzip -o ' + squishy_path + self.sqcn_linux_zipname + ' -d ' + squishy_path,
+                    'chmod +x ' + squishy_path + 'komodod ' + squishy_path + 'komodo-cli ' + squishy_path +
                     'fetch-params.sh']
         sshclient = remote_connection.server_ssh_connect()
         for cmd in cmd_list:
@@ -1021,12 +1021,12 @@ class Autoinstall(QtCore.QObject):
                 if self.input_list:
                     for file in self.input_list:
                         cmd_lst.append('del ' + zcash_path + str(file).replace('/', '\\'))
-                cmd_lst.append(marmara_path + 'fetch-params.bat')
+                cmd_lst.append(squishy_path + 'fetch-params.bat')
             if platform.system() == 'Linux':
                 if self.input_list:
                     for file in self.input_list:
                         cmd_lst.append('rm ' + zcash_path + file)
-                cmd_lst.append(marmara_path + 'fetch-params.sh')
+                cmd_lst.append(squishy_path + 'fetch-params.sh')
             for cmd in cmd_lst:
                 self.out_text.emit(cmd)
                 proc = subprocess.Popen(cmd, cwd=str(pathlib.Path.home()), shell=True, stdin=subprocess.PIPE,
@@ -1049,7 +1049,7 @@ class Autoinstall(QtCore.QObject):
             if self.input_list:
                 for file in self.input_list:
                     cmd_lst.append('rm ' + zcash_path + file)
-            cmd_lst.append(marmara_path + 'fetch-params.sh')
+            cmd_lst.append(squishy_path + 'fetch-params.sh')
             sshclient = remote_connection.server_ssh_connect()
             for cmd in cmd_lst:
                 session = sshclient.get_transport().open_session()
@@ -1092,22 +1092,22 @@ class ApiWorker(QtCore.QObject):
 
     @pyqtSlot()
     def exchange_api_run(self):
-        mcl_market_values = api_request.mcl_exchange_market(self.api_key)
-        self.out_list.emit(mcl_market_values)
+        sqcn_market_values = api_request.sqcn_exchange_market(self.api_key)
+        self.out_list.emit(sqcn_market_values)
         self.finished.emit()
 
     @pyqtSlot()
-    def mcl_stats_api(self):
-        mcl_stats = api_request.get_marmara_stats()
-        if type(mcl_stats) is dict:
-            self.out_dict.emit(mcl_stats)
-        if type(mcl_stats) is str:
-            self.out_err.emit(mcl_stats)
+    def sqcn_stats_api(self):
+        sqcn_stats = api_request.get_squishy_stats()
+        if type(sqcn_stats) is dict:
+            self.out_dict.emit(sqcn_stats)
+        if type(sqcn_stats) is str:
+            self.out_err.emit(sqcn_stats)
         self.finished.emit()
 
     @pyqtSlot()
-    def mcl_update_check(self):
-        tag_name = api_request.git_request_tag(api_request.marmara_api_url)
+    def sqcn_update_check(self):
+        tag_name = api_request.git_request_tag(api_request.squishy_api_url)
         if type(tag_name) is str:
             self.out_str.emit(tag_name)
             self.finished.emit()

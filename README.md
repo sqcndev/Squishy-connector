@@ -1,11 +1,11 @@
 [![Discord](https://img.shields.io/discord/492624619149459458.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.com/invite/eMJ5yjyJVM)
-[![downloads](https://img.shields.io/github/downloads/marmarachain/marmara-connector/total?color=brightgreen&style=plastic)]()
-![last commit](https://img.shields.io/github/last-commit/marmarachain/marmara-connector?color=blue)
-[![issues](https://img.shields.io/github/issues/marmarachain/marmara-connector?color=yellow)](https://github.com/marmarachain/marmara-connector/issues)
-![language](https://img.shields.io/github/languages/top/marmarachain/marmara-connector)
-![twitter](https://img.shields.io/twitter/follow/marmarachain?label=marmarachain&style=social)
+[![downloads](https://img.shields.io/github/downloads/squishychain/squishy-connector/total?color=brightgreen&style=plastic)]()
+![last commit](https://img.shields.io/github/last-commit/squishychain/squishy-connector?color=blue)
+[![issues](https://img.shields.io/github/issues/squishychain/squishy-connector?color=yellow)](https://github.com/squishychain/squishy-connector/issues)
+![language](https://img.shields.io/github/languages/top/squishychain/squishy-connector)
+![twitter](https://img.shields.io/twitter/follow/squishychain?label=squishychain&style=social)
 
-![MarmaraCreditLoops Logo](https://raw.githubusercontent.com/marmarachain/marmara/master/MCL-Logo.png "Marmara Credit Loops Logo")
+![MarmaraCreditLoops Logo](https://raw.githubusercontent.com/squishychain/squishy/master/SQCN-Logo.png "Marmara Credit Loops Logo")
 
 ## Marmara Connector
 Marmara Connector is an easy to use GUI application for installing Marmara Chain and conducting credit loops on your local machine or on a remote server. 
@@ -16,17 +16,17 @@ The local platform is either Linux, Windows or MacOS based OS. The remote platfo
 
 The developed platform establishes a connection to a remote platform through SSH technology.
 
-For more detailed information on creating Marmara credit loops, kindly refer to [Making Marmara Credit Loops](https://github.com/marmarachain/marmara/wiki/How-to-make-Marmara-Credit-Loops?). 
+For more detailed information on creating Marmara credit loops, kindly refer to [Making Marmara Credit Loops](https://github.com/squishychain/squishy/wiki/How-to-make-Marmara-Credit-Loops?). 
 
 ## Features
 - Enables installing Marmara Chain on a remote server or local virtual machine,
-- Send/receive MCL transactions,
+- Send/receive SQCN transactions,
 - Enables making Marmara Credit Loops and managing them on a single interface without having to know the commands.
 
 ## Getting Started
 
-- To install/download Marmara Connector, follow the [Marmara Connector Installation Guidelines](https://github.com/marmarachain/marmara-connector/wiki).
-- For development purposes, follow the [Developer Guidelines for Marmara Connector](https://github.com/marmarachain/marmara-connector/wiki/Getting-Started-with-Marmara-Connector-Development).
+- To install/download Marmara Connector, follow the [Marmara Connector Installation Guidelines](https://github.com/squishychain/squishy-connector/wiki).
+- For development purposes, follow the [Developer Guidelines for Marmara Connector](https://github.com/squishychain/squishy-connector/wiki/Getting-Started-with-Marmara-Connector-Development).
 
 ## Contact
 - B. Gültekin Çetiner [![twitter](https://img.shields.io/twitter/follow/drcetiner?style=social)](https://twitter.com/drcetiner )

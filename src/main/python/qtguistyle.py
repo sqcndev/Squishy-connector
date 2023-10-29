@@ -18,7 +18,7 @@ class GuiStyle(Ui_MainWindow):
         self.setupUi(self)  # loading from qtguidesign.py
         # setting params
         self.icon_path = icon_path
-        logo = QPixmap(self.icon_path + '/mcl_logo.png')
+        logo = QPixmap(self.icon_path + '/sqcn_logo.png')
         self.logo_label.setPixmap(logo)
         # Chain page
         self.stopchain_button.setIcon(QtGui.QIcon(self.icon_path + "/stop_icon.png"))
@@ -105,15 +105,15 @@ class GuiStyle(Ui_MainWindow):
         self.actionSee_Log_File.setIcon(qta.icon('mdi.file-document-outline', color=color))
         self.actionSee_chain_Log_File.setIcon(qta.icon('mdi.file-document-outline', color=color))
         self.actionCheck_for_Update.setIcon(qta.icon('mdi.open-in-app', color=color))
-        # mcl tab
-        self.mcl_tab.setTabIcon(0, qta.icon('fa.chain', color=color))
-        self.mcl_tab.setTabIcon(1, qta.icon('fa5s.wallet', color=color))
-        self.mcl_tab.setTabIcon(2, qta.icon('fa5s.coins', color=color))
-        self.mcl_tab.setTabIcon(3, qta.icon('fa5b.hornbill', color=color))
-        self.mcl_tab.setTabIcon(4, qta.icon('fa5.address-card', color=color))
-        self.mcl_tab.setTabIcon(5, qta.icon("mdi.chart-areaspline", color=color))
-        self.mcl_tab.setTabIcon(6, qta.icon("mdi.bulletin-board", color=color))
-        self.mcl_tab.setIconSize(QSize(28, 28))
+        # sqcn tab
+        self.sqcn_tab.setTabIcon(0, qta.icon('fa.chain', color=color))
+        self.sqcn_tab.setTabIcon(1, qta.icon('fa5s.wallet', color=color))
+        self.sqcn_tab.setTabIcon(2, qta.icon('fa5s.coins', color=color))
+        self.sqcn_tab.setTabIcon(3, qta.icon('fa5b.hornbill', color=color))
+        self.sqcn_tab.setTabIcon(4, qta.icon('fa5.address-card', color=color))
+        self.sqcn_tab.setTabIcon(5, qta.icon("mdi.chart-areaspline", color=color))
+        self.sqcn_tab.setTabIcon(6, qta.icon("mdi.bulletin-board", color=color))
+        self.sqcn_tab.setIconSize(QSize(28, 28))
         # Side panel
         self.getinfo_refresh_button.setIcon(qta.icon('ei.refresh', color=color))
         self.getinfo_refresh_button.setIconSize(QSize(24, 24))
@@ -261,8 +261,8 @@ class GuiStyle(Ui_MainWindow):
         self.start_install_button.setFont(font)
         self.install_progress_textBrowser.setFont(font)
         self.install_progressBar.setFont(font)
-        # mcl page
-        self.mcl_tab.tabBar().setFont(font)
+        # sqcn page
+        self.sqcn_tab.tabBar().setFont(font)
         # Side panel Labels
         self.walletsummary_label.setFont(font)
         self.totalnormal_label.setFont(font)
@@ -513,11 +513,11 @@ class GuiStyle(Ui_MainWindow):
         self.activated_earning_value.setFont(font)
         # Market Page
         self.usd_amount_lineEdit.setFont(font)
-        self.convert_mcl_label.setFont(font)
+        self.convert_sqcn_label.setFont(font)
         self.exchange_label_icon.setFont(font)
-        self.mcl_amount_lineEdit.setFont(font)
+        self.sqcn_amount_lineEdit.setFont(font)
         self.convert_usd_label.setFont(font)
-        self.mcl_usd_calculator_label.setFont(font)
+        self.sqcn_usd_calculator_label.setFont(font)
         self.exchange_market_label.setFont(font)
         self.ticker_volume_label.setFont(font)
         self.ticker_volume_label_value.setFont(font)

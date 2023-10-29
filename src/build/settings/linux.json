@@ -3,7 +3,7 @@
     "installer": "${app_name}-${version}-Linux.deb",
     "categories": "Utility;",
     "description": "Interact with Marmara Blockchain on a local machine or a remote server",
-    "author_email": "marmarachain@gmail.com",
-    "url": "https://marmara.io/",
+    "author_email": "squishychain@gmail.com",
+    "url": "https://squishy.io/",
     "public_settings": ["categories", "description", "author_email", "url"]
 }

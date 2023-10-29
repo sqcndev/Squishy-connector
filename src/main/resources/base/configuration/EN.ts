@@ -339,8 +339,8 @@
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="2901"/>
-        <source>Write an mcl address to send </source>
-        <translation>Write an mcl address to send </translation>
+        <source>Write an sqcn address to send </source>
+        <translation>Write an sqcn address to send </translation>
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="2902"/>
@@ -799,8 +799,8 @@
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="3057"/>
-        <source>MCL</source>
-        <translation>MCL</translation>
+        <source>SQCN</source>
+        <translation>SQCN</translation>
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="3059"/>
@@ -1047,8 +1047,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="662"/>
-        <source>Getting marmara chain path from config file</source>
-        <translation>Getting marmara chain path from config file</translation>
+        <source>Getting squishy chain path from config file</source>
+        <translation>Getting squishy chain path from config file</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="668"/>
@@ -1112,13 +1112,13 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="796"/>
-        <source>Checking marmarachain</source>
-        <translation>Checking marmarachain</translation>
+        <source>Checking squishychain</source>
+        <translation>Checking squishychain</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="799"/>
-        <source>marmarachain has pid</source>
-        <translation>marmarachain has pid</translation>
+        <source>squishychain has pid</source>
+        <translation>squishychain has pid</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1492"/>
@@ -1127,8 +1127,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="853"/>
-        <source>Checking if marmarachain is ready for rpc</source>
-        <translation>Checking if marmarachain is ready for rpc</translation>
+        <source>Checking if squishychain is ready for rpc</source>
+        <translation>Checking if squishychain is ready for rpc</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="869"/>
@@ -1517,8 +1517,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1919"/>
-        <source>getting marmarainfo, please wait</source>
-        <translation>getting marmarainfo, please wait</translation>
+        <source>getting squishyinfo, please wait</source>
+        <translation>getting squishyinfo, please wait</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1942"/>
@@ -1537,8 +1537,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="2090"/>
-        <source> MCL to </source>
-        <translation> MCL to </translation>
+        <source> SQCN to </source>
+        <translation> SQCN to </translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="2347"/>
@@ -1552,13 +1552,13 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="2532"/>
-        <source>finished searching marmara blockchain for all blocks for the set pubkey</source>
-        <translation>finished searching marmara blockchain for all blocks for the set pubkey</translation>
+        <source>finished searching squishy blockchain for all blocks for the set pubkey</source>
+        <translation>finished searching squishy blockchain for all blocks for the set pubkey</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="2647"/>
-        <source>finished searching marmarainfo</source>
-        <translation>finished searching marmarainfo</translation>
+        <source>finished searching squishyinfo</source>
+        <translation>finished searching squishyinfo</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="2665"/>
@@ -1717,8 +1717,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="665"/>
-        <source>marmara path from configuration file = </source>
-        <translation>marmara path from configuration file = </translation>
+        <source>squishy path from configuration file = </source>
+        <translation>squishy path from configuration file = </translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1654"/>
@@ -1772,8 +1772,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1726"/>
-        <source>marmara chain </source>
-        <translation>marmara chain </translation>
+        <source>squishy chain </source>
+        <translation>squishy chain </translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1732"/>
@@ -1867,8 +1867,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="771"/>
-        <source>Make sure the marmara chain is running!</source>
-        <translation>Make sure the marmara chain is running!</translation>
+        <source>Make sure the squishy chain is running!</source>
+        <translation>Make sure the squishy chain is running!</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1036"/>
@@ -1912,8 +1912,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="804"/>
-        <source>marmarachain is not running</source>
-        <translation>marmarachain is not running</translation>
+        <source>squishychain is not running</source>
+        <translation>squishychain is not running</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="811"/>
@@ -1987,8 +1987,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="3099"/>
-        <source>You are about to send 5 MCL to Marmara Team</source>
-        <translation>You are about to send 5 MCL to Marmara Team</translation>
+        <source>You are about to send 5 SQCN to Marmara Team</source>
+        <translation>You are about to send 5 SQCN to Marmara Team</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="274"/>

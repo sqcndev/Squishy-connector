@@ -13,12 +13,12 @@ def get_chain_config_params():
     operating_system = platform.system()
     ac_dir = ''
     if operating_system == 'Darwin':
-        ac_dir = os.environ['HOME'] + '/Library/Application Support/Komodo/MCL'
+        ac_dir = os.environ['HOME'] + '/Library/Application Support/Komodo/SQCN'
     elif operating_system == 'Linux':
-        ac_dir = os.environ['HOME'] + '/.komodo/MCL'
+        ac_dir = os.environ['HOME'] + '/.komodo/SQCN'
     elif operating_system == 'Win64' or operating_system == 'Windows':
-        ac_dir = '%s/komodo/MCL' % os.environ['APPDATA']
-    coin_config_file = str(ac_dir + '/' + 'MCL.conf')
+        ac_dir = '%s/komodo/SQCN' % os.environ['APPDATA']
+    coin_config_file = str(ac_dir + '/' + 'SQCN.conf')
     with open(coin_config_file, 'r') as conf_file:
         for line in conf_file:
             if re.search('rpcuser', line.rstrip()):

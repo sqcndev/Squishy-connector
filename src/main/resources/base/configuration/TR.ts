@@ -339,8 +339,8 @@
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="2928"/>
-        <source>Write an mcl address to send </source>
-        <translation>Gönderim için MCL Adresi Giriniz </translation>
+        <source>Write an sqcn address to send </source>
+        <translation>Gönderim için SQCN Adresi Giriniz </translation>
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="2929"/>
@@ -380,7 +380,7 @@
     <message>
         <location filename="../../../python/qtguidesign.py" line="2936"/>
         <source>Coin Send-Receive</source>
-        <translation>MCL Gönder Al</translation>
+        <translation>SQCN Gönder Al</translation>
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="2942"/>
@@ -799,8 +799,8 @@
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="3087"/>
-        <source>MCL</source>
-        <translation>MCL</translation>
+        <source>SQCN</source>
+        <translation>SQCN</translation>
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="3089"/>
@@ -1057,8 +1057,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="670"/>
-        <source>Getting marmara chain path from config file</source>
-        <translation>Konfigürasyon dosyasından marmara zincirine ait dizin yolu alınmaktadır</translation>
+        <source>Getting squishy chain path from config file</source>
+        <translation>Konfigürasyon dosyasından squishy zincirine ait dizin yolu alınmaktadır</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="676"/>
@@ -1122,13 +1122,13 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="804"/>
-        <source>Checking marmarachain</source>
+        <source>Checking squishychain</source>
         <translation>Marmara zinciri kontrol ediliyor</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="807"/>
-        <source>marmarachain has pid</source>
-        <translation>marmara zinciri arka planda çalışmaktadır</translation>
+        <source>squishychain has pid</source>
+        <translation>squishy zinciri arka planda çalışmaktadır</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1503"/>
@@ -1137,13 +1137,13 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="861"/>
-        <source>Checking if marmarachain is ready for rpc</source>
-        <translation>marmara zincirinin sorgular için hazır olup olmadığı kontrol ediliyor</translation>
+        <source>Checking if squishychain is ready for rpc</source>
+        <translation>squishy zincirinin sorgular için hazır olup olmadığı kontrol ediliyor</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="877"/>
         <source>chain ready</source>
-        <translation>marmara zinciri hazır</translation>
+        <translation>squishy zinciri hazır</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1335"/>
@@ -1527,8 +1527,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1929"/>
-        <source>getting marmarainfo, please wait</source>
-        <translation>marmarainfo sorgusu gönderiliyor, lütfen bekleyin</translation>
+        <source>getting squishyinfo, please wait</source>
+        <translation>squishyinfo sorgusu gönderiliyor, lütfen bekleyin</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1952"/>
@@ -1547,8 +1547,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="2100"/>
-        <source> MCL to </source>
-        <translation> MCL yi </translation>
+        <source> SQCN to </source>
+        <translation> SQCN yi </translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="2397"/>
@@ -1562,13 +1562,13 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="2582"/>
-        <source>finished searching marmara blockchain for all blocks for the set pubkey</source>
-        <translation>pukey&apos;e ait marmarainfo bilgilerini getirme işlemi bitti</translation>
+        <source>finished searching squishy blockchain for all blocks for the set pubkey</source>
+        <translation>pukey&apos;e ait squishyinfo bilgilerini getirme işlemi bitti</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="2703"/>
-        <source>finished searching marmarainfo</source>
-        <translation>marmarainfo sorgusu tamamlanmıştır</translation>
+        <source>finished searching squishyinfo</source>
+        <translation>squishyinfo sorgusu tamamlanmıştır</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="2721"/>
@@ -1727,8 +1727,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="673"/>
-        <source>marmara path from configuration file = </source>
-        <translation>Konfigürasyon dosyasından marmara dizini = </translation>
+        <source>squishy path from configuration file = </source>
+        <translation>Konfigürasyon dosyasından squishy dizini = </translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1665"/>
@@ -1782,8 +1782,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1737"/>
-        <source>marmara chain </source>
-        <translation>marmara zinciri </translation>
+        <source>squishy chain </source>
+        <translation>squishy zinciri </translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1743"/>
@@ -1877,7 +1877,7 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="779"/>
-        <source>Make sure the marmara chain is running!</source>
+        <source>Make sure the squishy chain is running!</source>
         <translation>Marmara zincirinin çalıştığına emin olun!</translation>
     </message>
     <message>
@@ -1922,8 +1922,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="812"/>
-        <source>marmarachain is not running</source>
-        <translation>marmarazinciri kapalı</translation>
+        <source>squishychain is not running</source>
+        <translation>squishyzinciri kapalı</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="819"/>
@@ -1997,8 +1997,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="3168"/>
-        <source>You are about to send 5 MCL to Marmara Team</source>
-        <translation>Marmara Takımına 5 MCL göndermek üzeresiniz</translation>
+        <source>You are about to send 5 SQCN to Marmara Team</source>
+        <translation>Marmara Takımına 5 SQCN göndermek üzeresiniz</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="278"/>
