@@ -1,4 +1,4 @@
-name: Build Marmara Connector
+name: Build Squishy Connector
 
 on:
   push:
@@ -38,7 +38,7 @@ jobs:
       - name: Upload a Build Artifact (Linux Portable)
         uses: actions/upload-artifact@v3.0.0
         with:
-          path: target/MarmaraConnector-*
+          path: target/SquishyConnector-*
           retention-days: 7
           
   build_Windows:
@@ -69,5 +69,5 @@ jobs:
       - name: Upload a Build Artifact (Windows Portable)
         uses: actions/upload-artifact@v3.0.0
         with:
-          path: .\target\MarmaraConnector*
+          path: .\target\SquishyConnector*
           retention-days: 7

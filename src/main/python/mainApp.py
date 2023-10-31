@@ -28,10 +28,10 @@ from fbs_runtime.application_context.PyQt5 import ApplicationContext
 logging.getLogger(__name__)
 
 
-class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
+class SquishyMain(QMainWindow, qtguistyle.GuiStyle):
 
     def __init__(self, parent=None):
-        super(MarmaraMain, self).__init__(parent)
+        super(SquishyMain, self).__init__(parent)
         #   Default Settings
         self.trans = QTranslator(self)
         self.retranslateUi(self)
@@ -264,7 +264,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         QToolTip.setFont(QFont('SansSerif', 10))
         self.copyaddress_button.setToolTip(self.tr("Copy address"))
         self.copypubkey_button.setToolTip(self.tr("Copy pubkey"))
-        self.support_pushButton.setToolTip(self.tr("Gift Marmara Core Team cups of coffee"))
+        self.support_pushButton.setToolTip(self.tr("Gift Squishy Core Team cups of coffee"))
         self.download_blocks_button.setToolTip(self.tr("Download Blocks bootstrap"))
         self.stats_refresh_pushButton.setToolTip(self.tr("can be refreshed once in a minute"))
         self.exchange_market_request_button.setToolTip(self.tr("can be refreshed once in 20 seconds"))
@@ -425,12 +425,12 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
     def change_lang(self, data):
         self.trans.load(configuration.configuration_path + '/language/' + data + '.qm')
         QtWidgets.QApplication.instance().installTranslator(self.trans)
-        self.retranslateUi(MarmaraMain)
+        self.retranslateUi(SquishyMain)
 
     def show_about(self):
         QMessageBox.about(self,
-                          self.tr("About Marmara Connector"),
-                          self.tr("This is a software written to carry out Marmarachain node operations "
+                          self.tr("About Squishy Connector"),
+                          self.tr("This is a software written to carry out Squishychain node operations "
                                   "on a local or remote machine." + "<br>Version info: ") + configuration.version
                           )
 
@@ -645,8 +645,8 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
                 worker.command_out.connect(worker_output)
             return worker
         else:
-            logging.info("Marmarachain is not started")
-            self.bottom_info(self.tr("Marmarachain is not started"))
+            logging.info("Squishychain is not started")
+            self.bottom_info(self.tr("Squishychain is not started"))
 
     @pyqtSlot()
     def start_animation(self):
@@ -680,8 +680,8 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             logging.info('Chain location verified.')
             self.chain_init()
         if output == 'need to install sqcn':
-            message_box = self.custom_message(self.tr('Installing Marmarachain'),
-                                              self.tr('Marmarachain is not installed. Would you like to install it?'),
+            message_box = self.custom_message(self.tr('Installing Squishychain'),
+                                              self.tr('Squishychain is not installed. Would you like to install it?'),
                                               "question", QMessageBox.Question)
             if message_box == QMessageBox.Yes:
                 logging.info('Auto-install.')
@@ -739,7 +739,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         self.install_progressBar.setValue(val)
         if 96 <= val < 100:
             self.install_progressBar.setValue(100)
-            message_box = self.custom_message(self.tr('Installation Completed'), self.tr('Starting Marmarachain'),
+            message_box = self.custom_message(self.tr('Installation Completed'), self.tr('Starting Squishychain'),
                                               'information', QMessageBox.Information)
             if message_box == QMessageBox.Ok:
                 self.main_tab.setCurrentIndex(1)
@@ -932,7 +932,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             try:
                 file = open(squishychain_rpc.squishy_path + 'version.info', "r")
                 self.chain_versiyon_tag = file.read().rstrip()
-                self.chain_version_label.setText('Marmara Chain ' + self.chain_versiyon_tag)
+                self.chain_version_label.setText('Squishy Chain ' + self.chain_versiyon_tag)
                 return self.chain_versiyon_tag
             except IOError as error:
                 logging.error("Exception error while reading sqcn version info file: " + str(error))
@@ -946,7 +946,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
                 sftp_client = squishychain_rpc.ssh_client.open_sftp()
                 remote_file = sftp_client.open(squishychain_rpc.squishy_path + 'version.info', "r")
                 self.chain_versiyon_tag = remote_file.read().rstrip().decode()
-                self.chain_version_label.setText('Marmara Chain ' + self.chain_versiyon_tag)
+                self.chain_version_label.setText('Squishy Chain ' + self.chain_versiyon_tag)
                 return self.chain_versiyon_tag
             except Exception as error:
                 logging.error("Exception error while reading sqcn version info file: " + str(error))
@@ -971,8 +971,8 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             stop_chain_thread = self.stop_chain_thread()
             stop_chain_thread.finished.connect(self.stop_animation)  # when finished close animation
         else:
-            self.bottom_info(self.tr('Marmarachain is not started'))
-            logging.warning('Marmarachain is not started')
+            self.bottom_info(self.tr('Squishychain is not started'))
+            logging.warning('Squishychain is not started')
 
     def stop_chain_thread(self):
         self.worker_stopchain = squishychain_rpc.RpcHandler()  # worker setting
@@ -994,8 +994,8 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
                 self.bottom_info(print_result)
 
             if result_out[0] == 0:
-                self.bottom_info(self.tr('Marmarachain stopped'))
-                logging.info('Marmarachain stopped')
+                self.bottom_info(self.tr('Squishychain stopped'))
+                logging.info('Squishychain stopped')
                 self.chain_status = False
                 self.myCCActivatedAddress = None
                 self.chainstatus_label_value.setPixmap(self.inactive_icon_pixmap)
@@ -1164,7 +1164,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
 
     @pyqtSlot()
     def open_youtube(self):
-        webbrowser.open_new('https://www.youtube.com/c/MarmaraCreditLoops')
+        webbrowser.open_new('https://www.youtube.com/c/SquishyCreditLoops')
 
     @pyqtSlot()
     def open_website(self):
@@ -1310,7 +1310,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         team_address = 'RXWqisAoJKEGVyXj46Zo3fDZnZTwQA6kQE'
         self.support_pushButton.setText(self.tr('Support') + ' (' + str(amount) + ' SQCN)')
         message_box = self.custom_message(self.tr('Confirm Transaction'),
-                                          self.tr(f'The amount to be send to the Marmara Team is ') + str(amount)
+                                          self.tr(f'The amount to be send to the Squishy Team is ') + str(amount)
                                           + ' SQCN',
                                           "question",
                                           QMessageBox.Question)
@@ -1601,7 +1601,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         elif platform.system() == 'Win64' or platform.system() == 'Windows':
             destination_path = '%s\Komodo\SQCN' % os.environ['APPDATA']
         messagebox = self.custom_message(self.tr("Extracting blocks"),
-                                         self.tr("Marmara chain will be closed if it is running"), 'question',
+                                         self.tr("Squishy chain will be closed if it is running"), 'question',
                                          QMessageBox.Question)
 
         if messagebox == QMessageBox.Yes:
@@ -1701,7 +1701,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
             self.update_chain_dialogbox(self.tr('your chain version'), self.chain_versiyon_tag)
 
     def update_chain_dialogbox(self, message, version):
-        message_box = self.custom_message('Marmara Chain Update', message +
+        message_box = self.custom_message('Squishy Chain Update', message +
                                           version + ' \n' + self.tr('Latest available version ')
                                           + self.latest_chain_version, 'question', QMessageBox.Question)
         if message_box == QMessageBox.Yes:
@@ -2146,8 +2146,8 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
                 self.bottom_info(self.tr('Start Date should be before the Stop Date'))
                 logging.info('Start Date should be before the Stop Date')
         else:
-            self.bottom_info(self.tr('Marmarachain is not started'))
-            logging.warning('Marmarachain is not started')
+            self.bottom_info(self.tr('Squishychain is not started'))
+            logging.warning('Squishychain is not started')
 
     @pyqtSlot(tuple)
     def getaddresstxids_result(self, result_out):
@@ -3115,8 +3115,8 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
                 else:
                     self.bottom_info(self.tr('Difference between start and end dates cannot exceed 40 days'))
         else:
-            self.bottom_info(self.tr('Marmarachain is not started'))
-            logging.warning('Marmarachain is not started')
+            self.bottom_info(self.tr('Squishychain is not started'))
+            logging.warning('Squishychain is not started')
 
     @pyqtSlot(tuple)
     def set_earnings_output(self, output):
@@ -3166,7 +3166,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
         if self.earning_stats_tableWidget.rowCount() > 0:
             team_address = 'RXWqisAoJKEGVyXj46Zo3fDZnZTwQA6kQE'
             message_box = self.custom_message(self.tr('Support the team to export'),
-                                              self.tr('You are about to send 5 SQCN to Marmara Team'),
+                                              self.tr('You are about to send 5 SQCN to Squishy Team'),
                                               "question",
                                               QMessageBox.Question)
             if message_box == QMessageBox.Yes:
@@ -3416,7 +3416,7 @@ class MarmaraMain(QMainWindow, qtguistyle.GuiStyle):
 
 if __name__ == '__main__':
     appctxt = ApplicationContext()
-    ui = MarmaraMain()
+    ui = SquishyMain()
     ui.show()
     exit_code = appctxt.app.exec_()
     sys.exit(exit_code)

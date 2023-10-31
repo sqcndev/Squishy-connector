@@ -17,7 +17,7 @@
    <bool>false</bool>
   </property>
   <property name="windowTitle">
-   <string notr="true">Marmara Connector</string>
+   <string notr="true">Squishy Connector</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -768,7 +768,7 @@
       </widget>
       <widget class="QWidget" name="squishy_tab">
        <attribute name="title">
-        <string>Marmara</string>
+        <string>Squishy</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_8">
         <item row="0" column="0" rowspan="3">
@@ -5204,7 +5204,7 @@
               </property>
               <widget class="QWidget" name="amountstat_tab">
                <attribute name="title">
-                <string>Marmara Stats</string>
+                <string>Squishy Stats</string>
                </attribute>
                <layout class="QGridLayout" name="gridLayout_60">
                 <item row="1" column="1">
@@ -5426,7 +5426,7 @@
                     <item>
                      <widget class="QLabel" name="stats_label">
                       <property name="text">
-                       <string>Marmara Stats</string>
+                       <string>Squishy Stats</string>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>

@@ -549,8 +549,8 @@
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="3130"/>
-        <source>Marmara</source>
-        <translation>Marmara</translation>
+        <source>Squishy</source>
+        <translation>Squishy</translation>
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="3131"/>
@@ -669,8 +669,8 @@
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="3067"/>
-        <source>Marmara Stats</source>
-        <translation>Marmara İstatistikleri</translation>
+        <source>Squishy Stats</source>
+        <translation>Squishy İstatistikleri</translation>
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="3061"/>
@@ -994,7 +994,7 @@
     </message>
 </context>
 <context>
-    <name>MarmaraMain</name>
+    <name>SquishyMain</name>
     <message>
         <location filename="../../../python/mainApp.py" line="265"/>
         <source>Copy address</source>
@@ -1007,8 +1007,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="267"/>
-        <source>Gift Marmara Core Team cups of coffee</source>
-        <translation>Marmara Çekirdek Ekibine Kahve Hediye et</translation>
+        <source>Gift Squishy Core Team cups of coffee</source>
+        <translation>Squishy Çekirdek Ekibine Kahve Hediye et</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="367"/>
@@ -1022,13 +1022,13 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="431"/>
-        <source>About Marmara Connector</source>
+        <source>About Squishy Connector</source>
         <translation>Yazılım Hakkında</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="431"/>
-        <source>This is a software written to carry out Marmarachain node operations on a local or remote machine.&lt;br&gt;Version info: </source>
-        <translation>İşbu yazılım lokal veya sunucu bilgisayarınızda Marmara zinciri düğüm operasyonlarınızı gerçekleştirmeniz için grafik bir arayüz sağlamaktadır.&lt;br&gt;Versiyon bilgisi: </translation>
+        <source>This is a software written to carry out Squishychain node operations on a local or remote machine.&lt;br&gt;Version info: </source>
+        <translation>İşbu yazılım lokal veya sunucu bilgisayarınızda Squishy zinciri düğüm operasyonlarınızı gerçekleştirmeniz için grafik bir arayüz sağlamaktadır.&lt;br&gt;Versiyon bilgisi: </translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="458"/>
@@ -1072,13 +1072,13 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="683"/>
-        <source>Installing Marmarachain</source>
-        <translation>Marmara zinciri yükleniyor</translation>
+        <source>Installing Squishychain</source>
+        <translation>Squishy zinciri yükleniyor</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="683"/>
-        <source>Marmarachain is not installed. Would you like to install it?</source>
-        <translation>Marmara zinciri yüklü değildir. Yüklemek ister misiniz?</translation>
+        <source>Squishychain is not installed. Would you like to install it?</source>
+        <translation>Squishy zinciri yüklü değildir. Yüklemek ister misiniz?</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="710"/>
@@ -1102,8 +1102,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="742"/>
-        <source>Starting Marmarachain</source>
-        <translation>Marmara zinciri Başlatılıyor</translation>
+        <source>Starting Squishychain</source>
+        <translation>Squishy zinciri Başlatılıyor</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="751"/>
@@ -1123,7 +1123,7 @@
     <message>
         <location filename="../../../python/mainApp.py" line="804"/>
         <source>Checking squishychain</source>
-        <translation>Marmara zinciri kontrol ediliyor</translation>
+        <translation>Squishy zinciri kontrol ediliyor</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="807"/>
@@ -1157,8 +1157,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="997"/>
-        <source>Marmarachain stopped</source>
-        <translation>Marmara zinciri durduruldu</translation>
+        <source>Squishychain stopped</source>
+        <translation>Squishy zinciri durduruldu</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1021"/>
@@ -1637,8 +1637,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1603"/>
-        <source>Marmara chain will be closed if it is running</source>
-        <translation>Marmara zinciri çalışıyor ise durdurulacaktır</translation>
+        <source>Squishy chain will be closed if it is running</source>
+        <translation>Squishy zinciri çalışıyor ise durdurulacaktır</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="3010"/>
@@ -1702,8 +1702,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="3118"/>
-        <source>Marmarachain is not started</source>
-        <translation>Marmara zinciri başlatılamadı</translation>
+        <source>Squishychain is not started</source>
+        <translation>Squishy zinciri başlatılamadı</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="2159"/>
@@ -1878,7 +1878,7 @@
     <message>
         <location filename="../../../python/mainApp.py" line="779"/>
         <source>Make sure the squishy chain is running!</source>
-        <translation>Marmara zincirinin çalıştığına emin olun!</translation>
+        <translation>Squishy zincirinin çalıştığına emin olun!</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1044"/>
@@ -1997,8 +1997,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="3168"/>
-        <source>You are about to send 5 SQCN to Marmara Team</source>
-        <translation>Marmara Takımına 5 SQCN göndermek üzeresiniz</translation>
+        <source>You are about to send 5 SQCN to Squishy Team</source>
+        <translation>Squishy Takımına 5 SQCN göndermek üzeresiniz</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="278"/>
@@ -2012,8 +2012,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1312"/>
-        <source>The amount to be send to the Marmara Team is </source>
-        <translation>Marmara Ekibine gönderilecek tutar </translation>
+        <source>The amount to be send to the Squishy Team is </source>
+        <translation>Squishy Ekibine gönderilecek tutar </translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="3183"/>

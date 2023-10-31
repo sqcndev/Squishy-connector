@@ -549,8 +549,8 @@
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="3100"/>
-        <source>Marmara</source>
-        <translation>Marmara</translation>
+        <source>Squishy</source>
+        <translation>Squishy</translation>
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="3101"/>
@@ -669,8 +669,8 @@
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="3037"/>
-        <source>Marmara Stats</source>
-        <translation>Marmara Stats</translation>
+        <source>Squishy Stats</source>
+        <translation>Squishy Stats</translation>
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="3031"/>
@@ -984,7 +984,7 @@
     </message>
 </context>
 <context>
-    <name>MarmaraMain</name>
+    <name>SquishyMain</name>
     <message>
         <location filename="../../../python/mainApp.py" line="261"/>
         <source>Copy address</source>
@@ -997,8 +997,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="263"/>
-        <source>Gift Marmara Core Team cups of coffee</source>
-        <translation>Gift Marmara Core Team cups of coffee</translation>
+        <source>Gift Squishy Core Team cups of coffee</source>
+        <translation>Gift Squishy Core Team cups of coffee</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="358"/>
@@ -1012,13 +1012,13 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="423"/>
-        <source>About Marmara Connector</source>
-        <translation>About Marmara Connector</translation>
+        <source>About Squishy Connector</source>
+        <translation>About Squishy Connector</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="423"/>
-        <source>This is a software written to carry out Marmarachain node operations on a local or remote machine.&lt;br&gt;Version info: </source>
-        <translation>This is a software written to carry out Marmarachain node operations on a local or remote machine.&lt;br&gt;Version info: </translation>
+        <source>This is a software written to carry out Squishychain node operations on a local or remote machine.&lt;br&gt;Version info: </source>
+        <translation>This is a software written to carry out Squishychain node operations on a local or remote machine.&lt;br&gt;Version info: </translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="450"/>
@@ -1062,13 +1062,13 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="675"/>
-        <source>Installing Marmarachain</source>
-        <translation>Installing Marmarachain</translation>
+        <source>Installing Squishychain</source>
+        <translation>Installing Squishychain</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="675"/>
-        <source>Marmarachain is not installed. Would you like to install it?</source>
-        <translation>Marmarachain is not installed. Would you like to install it?</translation>
+        <source>Squishychain is not installed. Would you like to install it?</source>
+        <translation>Squishychain is not installed. Would you like to install it?</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="702"/>
@@ -1092,8 +1092,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="734"/>
-        <source>Starting Marmarachain</source>
-        <translation>Starting Marmarachain</translation>
+        <source>Starting Squishychain</source>
+        <translation>Starting Squishychain</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="743"/>
@@ -1147,8 +1147,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="989"/>
-        <source>Marmarachain stopped</source>
-        <translation>Marmarachain stopped</translation>
+        <source>Squishychain stopped</source>
+        <translation>Squishychain stopped</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1013"/>
@@ -1627,8 +1627,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1592"/>
-        <source>Marmara chain will be closed if it is running</source>
-        <translation>Marmara chain will be closed if it is running</translation>
+        <source>Squishy chain will be closed if it is running</source>
+        <translation>Squishy chain will be closed if it is running</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="2951"/>
@@ -1692,8 +1692,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="966"/>
-        <source>Marmarachain is not started</source>
-        <translation>Marmarachain is not started</translation>
+        <source>Squishychain is not started</source>
+        <translation>Squishychain is not started</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="2144"/>
@@ -1987,8 +1987,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="3099"/>
-        <source>You are about to send 5 SQCN to Marmara Team</source>
-        <translation>You are about to send 5 SQCN to Marmara Team</translation>
+        <source>You are about to send 5 SQCN to Squishy Team</source>
+        <translation>You are about to send 5 SQCN to Squishy Team</translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="274"/>
@@ -2002,8 +2002,8 @@
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="1301"/>
-        <source>The amount to be send to the Marmara Team is </source>
-        <translation>The amount to be send to the Marmara Team is </translation>
+        <source>The amount to be send to the Squishy Team is </source>
+        <translation>The amount to be send to the Squishy Team is </translation>
     </message>
     <message>
         <location filename="../../../python/mainApp.py" line="3114"/>

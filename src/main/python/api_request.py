@@ -3,13 +3,13 @@ import logging
 
 logging.getLogger(__name__)
 
-squishy_download_url = 'https://github.com/squishychain/squishy/releases/download/'
-app_release_url = 'https://github.com/squishychain/squishy-connector/releases/'
-squishy_api_url = "https://api.github.com/repos/squishychain/squishy/releases/latest"
-app_api_url = "https://api.github.com/repos/squishychain/squishy-connector/releases/latest"
+squishy_download_url = 'https://github.com/sqcndev/Squishy-connector/releases/download/'
+app_release_url = 'https://github.com/sqcndev/Squishy-connector/releases'
+squishy_api_url = "https://api.github.com/repos/sqcndev/Squishy-connector/releases/latest"
+app_api_url = "https://api.github.com/repos/sqcndev/Squishy-connector/releases/latest"
 
-coinpaprika = {'market': 'https://api.coinpaprika.com/v1/coins/sqcn-squishy-credit-loops/markets?quotes=USD,TRY,BTC,EUR,RUB',
-               'tickers': 'https://api.coinpaprika.com/v1/tickers/sqcn-squishy-credit-loops?quotes=',
+coinpaprika = {'market': 'https://api.coinpaprika.com/v1/coins/sqcn-squishy-coin/markets?quotes=USD,TRY,BTC,EUR,RUB',
+               'tickers': 'https://api.coinpaprika.com/v1/tickers/sqcn-squishy-coin?quotes=',
                'fiatlist': ['USD', 'TRY', 'BTC', 'EUR', 'RUB']}
 exchange_market_api_list = {'coinpaprika': coinpaprika}
 """
@@ -56,15 +56,15 @@ def latest_app_release_url():
 
 def get_squishy_stats():
     try:
-        response = requests.get('https://explorer.squishy.io/insight-api-komodo/stats', timeout=5)
+        response = requests.get('http://explorer.squishycoin.us/ext/getbasicstats', timeout=5)
         return response.json()
     except Exception:
         try:
-            response = requests.get('https://explorer2.squishy.io/insight-api-komodo/stats', timeout=5)
+            response = requests.get('http://explorer.squishycoin.us/ext/getbasicstats', timeout=5)
             return response.json()
         except Exception:
             try:
-                response = requests.get('https://explorer3.squishy.io/insight-api-komodo/stats', timeout=5)
+                response = requests.get('http://explorer.squishycoin.us/ext/getbasicstats', timeout=5)
                 return response.json()
             except Exception as e:
                 logging.error(e)
@@ -95,9 +95,9 @@ def sqcn_exchange_market(api_list_key):
 
 
 def get_blocks_details(block, hash):
-    api_url_list = ['https://explorer.squishy.io/insight-api-komodo/blocks',
-                    'https://explorer2.squishy.io/insight-api-komodo/blocks',
-                    'https://explorer3.squishy.io/insight-api-komodo/blocks']
+    api_url_list = ['http://explorer.squishycoin.us/api/getblock',
+                    'http://explorer.squishycoin.us/api/getblock',
+                    'http://explorer.squishycoin.us/api/getblock']
     result_lists = []
     for api_url in api_url_list:
         try:
@@ -137,9 +137,9 @@ def get_blocks_details(block, hash):
 
 
 def get_block_hash(hash, index):
-    api_url_list = ['https://explorer.squishy.io/insight-api-komodo/block/' + hash,
-                    'https://explorer2.squishy.io/insight-api-komodo/block/' + hash,
-                    'https://explorer3.squishy.io/insight-api-komodo/block/' + hash]
+    api_url_list = ['http://explorer.squishycoin.us/block/' + hash,
+                    'http://explorer.squishycoin.us/block/' + hash,
+                    'http://explorer.squishycoin.us/block/' + hash]
     try:
         response_e = requests.get(api_url_list[index], timeout=15)
         return response_e.json()

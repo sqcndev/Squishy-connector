@@ -2,7 +2,7 @@
     "freeze_dir": "target/${app_name}-${version}-Linux",
     "installer": "${app_name}-${version}-Linux.deb",
     "categories": "Utility;",
-    "description": "Interact with Marmara Blockchain on a local machine or a remote server",
+    "description": "Interact with Squishy Blockchain on a local machine or a remote server",
     "author_email": "squishychain@gmail.com",
     "url": "https://squishy.io/",
     "public_settings": ["categories", "description", "author_email", "url"]

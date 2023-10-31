@@ -5,28 +5,28 @@
 ![language](https://img.shields.io/github/languages/top/squishychain/squishy-connector)
 ![twitter](https://img.shields.io/twitter/follow/squishychain?label=squishychain&style=social)
 
-![MarmaraCreditLoops Logo](https://raw.githubusercontent.com/squishychain/squishy/master/SQCN-Logo.png "Marmara Credit Loops Logo")
+![SquishyCreditLoops Logo](https://raw.githubusercontent.com/squishychain/squishy/master/SQCN-Logo.png "Squishy Credit Loops Logo")
 
-## Marmara Connector
-Marmara Connector is an easy to use GUI application for installing Marmara Chain and conducting credit loops on your local machine or on a remote server. 
+## Squishy Connector
+Squishy Connector is an easy to use GUI application for installing Squishy Chain and conducting credit loops on your local machine or on a remote server. 
 
-The app is designed to handle Marmara Credit loop operations as well as wallet operations.
+The app is designed to handle Squishy Credit loop operations as well as wallet operations.
 
 The local platform is either Linux, Windows or MacOS based OS. The remote platform is Linux based OS.
 
 The developed platform establishes a connection to a remote platform through SSH technology.
 
-For more detailed information on creating Marmara credit loops, kindly refer to [Making Marmara Credit Loops](https://github.com/squishychain/squishy/wiki/How-to-make-Marmara-Credit-Loops?). 
+For more detailed information on creating Squishy credit loops, kindly refer to [Making Squishy Credit Loops](https://github.com/squishychain/squishy/wiki/How-to-make-Squishy-Credit-Loops?). 
 
 ## Features
-- Enables installing Marmara Chain on a remote server or local virtual machine,
+- Enables installing Squishy Chain on a remote server or local virtual machine,
 - Send/receive SQCN transactions,
-- Enables making Marmara Credit Loops and managing them on a single interface without having to know the commands.
+- Enables making Squishy Credit Loops and managing them on a single interface without having to know the commands.
 
 ## Getting Started
 
-- To install/download Marmara Connector, follow the [Marmara Connector Installation Guidelines](https://github.com/squishychain/squishy-connector/wiki).
-- For development purposes, follow the [Developer Guidelines for Marmara Connector](https://github.com/squishychain/squishy-connector/wiki/Getting-Started-with-Marmara-Connector-Development).
+- To install/download Squishy Connector, follow the [Squishy Connector Installation Guidelines](https://github.com/squishychain/squishy-connector/wiki).
+- For development purposes, follow the [Developer Guidelines for Squishy Connector](https://github.com/squishychain/squishy-connector/wiki/Getting-Started-with-Squishy-Connector-Development).
 
 ## Contact
 - B. Gültekin Çetiner [![twitter](https://img.shields.io/twitter/follow/drcetiner?style=social)](https://twitter.com/drcetiner )
@@ -42,7 +42,7 @@ Contributions to the development of this software are very welcomed. Here is the
 
 Important Notice
 ---
-Marmara Connector is experimental and a work-in-progress. Use at your own risk. 
+Squishy Connector is experimental and a work-in-progress. Use at your own risk. 
  
 License
 ---
