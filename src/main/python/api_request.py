@@ -95,9 +95,9 @@ def sqcn_exchange_market(api_list_key):
 
 
 def get_blocks_details(block, hash):
-    api_url_list = ['http://explorer.squishycoin.us/api/getblock',
-                    'http://explorer.squishycoin.us/api/getblock',
-                    'http://explorer.squishycoin.us/api/getblock']
+    api_url_list = ['http://explorer.squishycoin.us/block',
+                    'http://explorer.squishycoin.us/block',
+                    'http://explorer.squishycoin.us/block']
     result_lists = []
     for api_url in api_url_list:
         try:
