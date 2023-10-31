@@ -2969,7 +2969,7 @@ class Ui_MainWindow(object):
         self.make_credit_loop_amount_label.setText(_translate("MainWindow", "Amount :"))
         self.make_credit_loop_matures_label.setText(_translate("MainWindow", "Matures : "))
         self.make_credit_loop_currency_label.setText(_translate("MainWindow", "Currency : "))
-        self.make_credit_loop_currency_value_label.setText(_translate("MainWindow", "MARMARA"))
+        self.make_credit_loop_currency_value_label.setText(_translate("MainWindow", "SQUISHY"))
         self.make_credit_loop_senderpubkey_label.setText(_translate("MainWindow", "Sender Pubkey"))
         self.contactpk_makeloop_comboBox.setItemText(0, _translate("MainWindow", "Contacts"))
         self.send_loop_request_button.setText(_translate("MainWindow", "Send"))

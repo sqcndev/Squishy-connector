@@ -449,8 +449,8 @@
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="2972"/>
-        <source>MARMARA</source>
-        <translation>MARMARA</translation>
+        <source>SQUISHY</source>
+        <translation>SQUISHY</translation>
     </message>
     <message>
         <location filename="../../../python/qtguidesign.py" line="2977"/>
